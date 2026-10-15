@@ -1,0 +1,20 @@
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+
+parameters:
+    level: 9
+
+    paths:
+        - src
+        - tests
+
+    excludePaths:
+        - %currentWorkingDirectory%/migrations/*
+        - %currentWorkingDirectory%/var/*
+        - %currentWorkingDirectory%/.docker/*
+
+    treatPhpDocTypesAsCertain: false
+
+    reportUnmatchedIgnoredErrors: true
+
+    ignoreErrors:

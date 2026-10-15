@@ -1,0 +1,26 @@
+<nav class="site-navbar" aria-label="Navigation principale">
+    <div class="site-navbar-inner">
+
+        {# Bloc Logo / Marque #}
+        <a href="" class="site-navbar-brand" aria-label="Le Carnet Gourmand, accueil">
+            <span class="site-navbar-brand-icon" aria-hidden="true">✳</span>
+            <span class="site-navbar-brand-text">
+                <span class="site-navbar-brand-name">Le Carnet Gourmand</span>
+                <span class="site-navbar-brand-tagline">LA CUISINE DU QUOTIDIEN</span>
+            </span>
+        </a>
+
+        {# Bloc Liens de navigation #}
+        <div class="site-navbar-links">
+            <a href="" class="site-navbar-link {{ app.current_route == 'app_recipes' ? 'site-navbar-link-active' : '' }}">
+                Recettes
+            </a>
+
+            <a href="" class="site-navbar-login">
+                <span>Connexion</span>
+                <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,53 @@
+parameters:
+    environment:
+        variables:
+            PHP_PATH: 'docker exec -i recettes-front_php php'
+    process_timeout: 380
+    bin_dir: ./vendor/bin
+    stop_on_failure: true
+    hide_circumvention_tip: true
+    git_hook_variables:
+        EXEC_GRUMPHP_COMMAND: docker exec -i recipes-front_php
+    tasks:
+        git_commit_message:
+            allow_empty_message: false
+            enforce_capitalized_subject: false
+            enforce_no_subject_trailing_period: true
+            enforce_single_lined_subject: true
+            max_subject_width: 120
+            max_body_width: 500
+            matchers:
+                Must contain JIRA issue number and short description separate by a colon and space: '/^(FID-\d+|PTSI-\d+|ISSUE-\d+|IT|HOTFIX|RELEASE-[0-9\.]+[0-9])+: .*/'
+            case_insensitive: false
+            multiline: false
+            metadata:
+                priority: 100
+        git_branch_name:
+            whitelist:
+                - '/(feature|hotfix)\/(FID|PTSI)-\d+.*/'
+                - '/issue\/\d+.*/'
+                - '/it\/.*/i'
+                - '/hotfix\/.*/'
+                - '/release\/([0-9\.]+[0-9]$)/'
+        phpcsfixer2:
+            config: '.php-cs-fixer.php'
+            diff: true
+            using_cache: false
+            triggered_by: [ 'php' ]
+            metadata:
+                priority: 98
+        phpstan:
+            configuration: 'phpstan.neon'
+            level: 9
+            triggered_by: [ 'php' ]
+            metadata:
+                priority: 97
+        twigcsfixer:
+            paths:
+                - templates
+            level: warning
+        phpunit:
+            config_file: ./
+            always_execute: false
+            metadata:
+                priority: 96

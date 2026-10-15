@@ -1,0 +1,35 @@
+{% if id != 'delete' %}
+    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalRemoveInfos-{{ id }}">
+        {% if icon is defined %}
+            <i class="fas fa-trash-alt"></i>
+        {% else %}
+            Supprimer
+        {% endif %}
+    </button>
+{% endif %}
+
+<div class="modal fade" id="modalRemoveInfos-{{ id }}" tabindex="-1" aria-labelledby="modalRemoveInfos" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalRemoveInfos">⚠️ Attention&nbsp;!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                {{ message|raw }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                {% if id != 'delete' %}
+                    <form class="inline" method="post" action="{{ path(route, {id: id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ id) }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </form>
+                {% else %}
+                    <button class="btn btn-danger" data-bs-dismiss="modal">Supprimer</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

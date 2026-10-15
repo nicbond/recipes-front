@@ -1,0 +1,148 @@
+<div
+    class="modal fade"
+    id="modalPromotedRecipes"
+    tabindex="-1"
+    aria-labelledby="modalPromotedRecipesLabel"
+    aria-hidden="true"
+    data-controller="promoted-recipes"
+    data-promoted-recipes-save-url-value="{{ path('admin.recipe.promoted_save') }}"
+    data-promoted-recipes-load-url-value="{{ path('admin.recipe.promoted_load') }}"
+    data-promoted-recipes-csrf-token-value="{{ csrf_token('promoted_recipes') }}"
+    data-promoted-recipes-max-value="10"
+    data-action="shown.bs.modal->promoted-recipes#open"
+>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h5
+                        class="modal-title"
+                        id="modalPromotedRecipesLabel"
+                    >
+                        Gérer les recettes mises en avant
+                    </h5>
+
+                    <p class="text-muted small mb-0 mt-1">
+                        Faites glisser les recettes dans la zone de droite
+                        pour les mettre en avant.
+                        Vous pouvez également modifier leur ordre.
+                        10 recettes maximum.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Fermer"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div
+                    class="text-center py-5 d-none"
+                    data-promoted-recipes-target="loading"
+                >
+                    <div
+                        class="spinner-border text-primary"
+                        role="status"
+                    >
+                        <span class="visually-hidden">
+                            Chargement...
+                        </span>
+                    </div>
+
+                    <p class="text-muted mt-2 mb-0">
+                        Chargement des recettes...
+                    </p>
+                </div>
+
+                <div
+                    data-promoted-recipes-target="content"
+                >
+                    <div class="row g-4">
+
+                        {# Available recipes #}
+                        <div class="col-md-6">
+
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">
+                                    Recettes disponibles
+                                </h6>
+                            </div>
+
+                            <input
+                                type="search"
+                                class="form-control mb-3"
+                                placeholder="Rechercher une recette..."
+                                autocomplete="off"
+                                data-promoted-recipes-target="search"
+                                data-action="input->promoted-recipes#filter"
+                            >
+
+                            <div
+                                class="recipe-list border rounded p-2"
+                                data-promoted-recipes-target="available"
+                            ></div>
+
+                        </div>
+
+                        {# Promoted recipes #}
+                        <div class="col-md-6">
+
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                <h6 class="mb-0">
+                                    Recettes mises en avant
+                                </h6>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary btn-sm"
+                                    data-action="click->promoted-recipes#reset"
+                                >
+                                    <i class="fas fa-undo me-1"></i>
+                                    Réinitialiser
+                                </button>
+
+                            </div>
+
+                            <div
+                                class="recipe-list border rounded p-2"
+                                data-promoted-recipes-target="chosen"
+                            ></div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal"
+                    data-promoted-recipes-target="saveButton"
+                    data-action="click->promoted-recipes#save"
+                >
+                    <i class="fas fa-save me-1"></i>
+                    Enregistrer
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>

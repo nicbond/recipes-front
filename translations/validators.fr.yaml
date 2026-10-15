@@ -1,0 +1,8 @@
+form:
+  email:
+    required: "Veuillez saisir une adresse email."
+    invalid: "L'adresse email saisie n'est pas valide."
+  password:
+    required: "Veuillez saisir un mot de passe."
+    valid: "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial."
+    length_min: "Le mot de passe doit contenir au moins {{ limit }} caractères."

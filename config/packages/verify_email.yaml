@@ -1,0 +1,2 @@
+symfonycasts_verify_email:
+    lifetime: 86400 #Fixe la validité du lien d'activation à 24 heures (86400 secondes)

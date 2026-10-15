@@ -1,0 +1,11 @@
+twig:
+  default_path: '%kernel.project_dir%/templates'
+  form_themes: ['bootstrap_5_layout.html.twig']
+  globals:
+    is_maintenance_active: '%env(bool:ACTIVE_MAINTENANCE_PAGE)%'
+    is_allowed_ip: '%env(bool:ALLOWED_IP)%'
+
+when@test:
+  twig:
+    strict_variables: true
+

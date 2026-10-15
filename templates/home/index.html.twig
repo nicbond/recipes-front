@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | Le Carnet Gourmand{% endblock %}
+
+{% block body %} <main class="home-page"> <section class="home-hero"> <div class="home-hero-content"> <span class="home-eyebrow"> <span class="home-eyebrow-dot"></span>
+LE PLAISIR DU FAIT MAISON </span>
+
+            <h1>
+                La cuisine qui fait du bien,
+                <span>tout simplement.</span>
+            </h1>
+
+            <p class="home-hero-description">
+                Des idées gourmandes, des ingrédients de saison et le plaisir
+                de préparer de bons petits plats. Bienvenue dans votre nouveau
+                rendez-vous culinaire.
+            </p>
+
+            <div class="home-hero-actions">
+                <a href="#univers" class="home-button home-button-primary">
+                    Explorer notre univers
+                    <span aria-hidden="true">→</span>
+                </a>
+                <a href="#philosophie" class="home-text-link">
+                    Notre philosophie
+                </a>
+            </div>
+
+            <div class="home-hero-note">
+                <span class="home-note-icon" aria-hidden="true">♡</span>
+                <span>Du plaisir dans l'assiette, sans se compliquer la vie.</span>
+            </div>
+        </div>
+
+        <div class="home-hero-visual" aria-hidden="true">
+            <div class="home-visual-orbit home-visual-orbit-outer"></div>
+            <div class="home-visual-orbit home-visual-orbit-inner"></div>
+
+            <div class="home-visual-sun"></div>
+
+            <div class="home-visual-bowl">
+                <div class="home-bowl-content">
+                    <span class="home-food home-food-one"></span>
+                    <span class="home-food home-food-two"></span>
+                    <span class="home-food home-food-three"></span>
+                    <span class="home-food home-food-four"></span>
+                    <span class="home-food home-food-five"></span>
+                    <span class="home-food home-food-six"></span>
+                    <span class="home-food home-food-seven"></span>
+                    <span class="home-food home-food-eight"></span>
+                </div>
+            </div>
+
+            <div class="home-floating-card home-floating-card-top">
+                <span class="home-floating-icon">✳</span>
+                <span>Du frais<br>et du naturel</span>
+            </div>
+
+            <div class="home-floating-card home-floating-card-bottom">
+                <span class="home-floating-heart">♥</span>
+                <span>Fait avec<br>amour</span>
+            </div>
+
+            <span class="home-visual-sparkle home-sparkle-one">✳</span>
+            <span class="home-visual-sparkle home-sparkle-two">✦</span>
+        </div>
+    </section>
+
+    <section class="home-values" id="philosophie">
+        <div class="home-value">
+            <span class="home-value-number">01</span>
+            <div>
+                <h2>Simple</h2>
+                <p>Des idées accessibles pour cuisiner sans stress.</p>
+            </div>
+        </div>
+
+        <div class="home-value">
+            <span class="home-value-number">02</span>
+            <div>
+                <h2>Gourmand</h2>
+                <p>Des saveurs généreuses et des assiettes qui donnent envie.</p>
+            </div>
+        </div>
+
+        <div class="home-value">
+            <span class="home-value-number">03</span>
+            <div>
+                <h2>De saison</h2>
+                <p>Le plaisir de cuisiner au rythme des bons produits.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-univers" id="univers">
+        <div class="home-section-heading">
+            <div>
+                <span class="home-eyebrow">À CHACUN SES ENVIES</span>
+                <h2>La gourmandise a mille visages.</h2>
+            </div>
+
+            <p>
+                Un peu d'inspiration, une pincée de curiosité
+                et beaucoup de plaisir à partager.
+            </p>
+        </div>
+
+        <div class="home-category-grid">
+            <article class="home-category-card home-category-card-green">
+                <div class="home-category-illustration" aria-hidden="true">
+                    <span class="home-category-symbol">✳</span>
+                    <span class="home-category-orbit"></span>
+                </div>
+                <div class="home-category-content">
+                    <span class="home-category-label">FRAÎCHEUR & LÉGÈRETÉ</span>
+                    <h3>Les envies de fraîcheur</h3>
+                    <p>
+                        Des assiettes colorées, des produits frais
+                        et des associations pleines de vie.
+                    </p>
+                </div>
+                <span class="home-category-decoration" aria-hidden="true">01</span>
+            </article>
+
+            <article class="home-category-card home-category-card-peach">
+                <div class="home-category-illustration" aria-hidden="true">
+                    <span class="home-category-symbol">♡</span>
+                    <span class="home-category-orbit"></span>
+                </div>
+                <div class="home-category-content">
+                    <span class="home-category-label">GÉNÉROSITÉ & PARTAGE</span>
+                    <h3>Les petits plats réconfortants</h3>
+                    <p>
+                        Des plats généreux qui rassemblent
+                        et transforment les repas en moments précieux.
+                    </p>
+                </div>
+                <span class="home-category-decoration" aria-hidden="true">02</span>
+            </article>
+
+            <article class="home-category-card home-category-card-yellow">
+                <div class="home-category-illustration" aria-hidden="true">
+                    <span class="home-category-symbol">✦</span>
+                    <span class="home-category-orbit"></span>
+                </div>
+                <div class="home-category-content">
+                    <span class="home-category-label">DOUCEUR & GOURMANDISE</span>
+                    <h3>Les envies sucrées</h3>
+                    <p>
+                        Une touche de douceur pour terminer
+                        le repas ou accompagner une pause.
+                    </p>
+                </div>
+                <span class="home-category-decoration" aria-hidden="true">03</span>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-quote">
+        <span class="home-quote-mark" aria-hidden="true">“</span>
+        <p>
+            La meilleure recette est celle que l'on prend plaisir à préparer,
+            et encore plus à partager.
+        </p>
+        <span class="home-quote-caption">L'ESPRIT DU CARNET GOURMAND</span>
+    </section>
+
+    <section class="home-final-cta">
+        <div>
+            <span class="home-eyebrow">VOTRE PROCHAINE HISTOIRE GOURMANDE</span>
+            <h2>Il y a toujours une bonne raison de se mettre à table.</h2>
+            <p>
+                Prenez le temps de savourer les choses simples.
+                Le meilleur commence souvent dans la cuisine.
+            </p>
+        </div>
+
+        <span class="home-final-decoration" aria-hidden="true">Bon<br>appétit !</span>
+    </section>
+</main>
+
+{% endblock %}

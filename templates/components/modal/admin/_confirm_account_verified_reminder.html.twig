@@ -1,0 +1,25 @@
+<div class="modal fade" id="confirmRemindModal{{ admin.id }}" tabindex="-1" aria-labelledby="remindModalLabel{{ admin.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="remindModalLabel{{ admin.id }}">
+                    <i class="fas fa-paper-plane text-primary me-2"></i> Confirmation de renvoi de vérification de l'email
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body text-start py-4">
+                Pour l'administrateur <strong class="text-primary">{{ admin.email }}</strong>, êtes-vous sûr de vouloir renvoyer le mail de vérification du compte ?
+            </div>
+            <div class="modal-footer bg-light border-top-0">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Annuler</button>
+
+                <form action="{{ path('admin.admins.verified-account', {id: admin.id}) }}" method="POST" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('resend-activation-' ~ admin.id) }}">
+                    <button type="submit" class="btn btn-sm btn-primary px-3">
+                        Oui, envoyer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
