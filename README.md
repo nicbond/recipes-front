@@ -1,54 +1,42 @@
-# Recipes
+# Recipes Front
 
-Symfony 7 application for managing cooking recipes.
+Symfony 7.4 application providing the frontend interface for the Recipes
+project.
 
-This personal project was created to experiment with modern Symfony best practices and explore architectural patterns used in professional projects.
+This project is separated from the backend and communicates with it
+through HTTP API requests. It focuses on rendering the user interface,
+handling user authentication, and managing the frontend session.
 
 ## Features
 
-* Recipe management (CRUD, online/offline status, tags, ingredients, quantities)
-* Category and tag management
-* Ingredient creation on-the-fly via Tom Select autocomplete
-* Recipe image upload, preview and WebP conversion
-* Turbo-powered modal forms (edit without page reload)
-* Pagination and sortable listings
-* Email and SMS notifications
-* Responsive administration back-office
-* Business rules enforced at application level (e.g. protected deletions)
-* Async PDF generation via Symfony Messenger
-* Authentication (login, registration) with role-based access control
-* Email verification on registration via signed URL (symfonycasts/verify-email-bundle)
-* Password reset via secure token with expiration (symfonycasts/reset-password-bundle)
-* Asynchronous email delivery via Symfony Messenger (contact, account verification, password reset)
-* Password visibility toggle on all password fields
-* Google Authenticator two-factor authentication (2FA) via scheb/2fa-bundle
-* Granular permissions with PHP enums, Symfony Security Voters, and administrator permission management
-
+* Login form using email and password
+* Authentication through the backend API (`/api/login_check`)
+* JWT-based authentication
+* Server-side session management
+* Redirection to the home page when an authenticated user visits the login page
+* JWT expiration handling with automatic redirection to the login page
+* Flash notification explaining when the session has expired
+* Role-based access control for protected frontend pages
+* CSRF protection for logout
+* Centralized communication with the backend API through Symfony HttpClient
+* Handling of invalid credentials and unavailable authentication services
 
 ## Tech Stack
 
-* PHP 8.4
-* Symfony 7
-* Doctrine ORM
-* MySQL
-* Docker / Docker Compose
+* PHP 8.3
+* Symfony 7.4
 * Twig
-* Symfony UX Autocomplete
-* Symfony UX Turbo & Stimulus
-* SortableJS
-* Bootstrap 5
-* Font Awesome
-* symfonycasts/verify-email-bundle
-* symfonycasts/reset-password-bundle
-* scheb/2fa-bundle + scheb/2fa-google-authenticator
-* Custom Security Voters & PHP Enums for granular permissions
+* Symfony Security
+* Symfony Forms
+* Symfony HttpClient
+* JWT authentication
+* Docker / Docker Compose
+* Apache
 * PHPUnit
 * PHPStan
 * PHP-CS-Fixer
 * Twig CS Fixer
 * GrumPHP
-* Mailpit
-
 
 > See [TECHNICAL.md](TECHNICAL.md) for a detailed description of the architecture and implementation choices.
 
@@ -110,7 +98,6 @@ vendor/bin/twig-cs-fixer lint templates/
 vendor/bin/twig-cs-fixer fix templates/
 vendor/bin/grumphp run
 ```
-
 
 ## Docker
 

@@ -1,116 +1,115 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}Connexion | Le Carnet Gourmand{% endblock %}
 
 {% block body %}
+    <main class="login-page">
+        <section class="login-card" aria-labelledby="login-title">
 
-    <div class="login-page-flash-wrapper text-center">
-        {{ include('partials/flash.html.twig') }}
-    </div>
+            <div class="login-card__intro">
+                <span class="login-card__eyebrow">BIENVENUE CHEZ VOUS</span>
 
-    <div class="login-page">
-        <div class="login-card">
-            <div class="login-logo">
-                <i class="fa-solid fa-utensils"></i>
+                <div class="login-card__illustration" aria-hidden="true">
+                    <span>✳</span>
+                </div>
+
+                <h1>Le plaisir de cuisiner commence ici.</h1>
+
+                <p class="login-card__description">
+                    Retrouvez votre espace personnel et continuez
+                    à explorer les recettes qui font du quotidien
+                    un moment gourmand.
+                </p>
+
+                <div class="login-card__signature">
+                    <span class="login-card__signature-line"></span>
+                    <span>La cuisine du quotidien</span>
+                </div>
             </div>
 
-            <h1>Back-Office</h1>
-
-            <p class="login-subtitle">
-                Connectez-vous à votre espace administrateur
-            </p>
-
-            {% if error %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error.messageKey|trans(error.messageData, 'security')|nl2br }}
+            <div class="login-card__form">
+                <div class="login-heading">
+                    <span class="login-heading__label">VOTRE ESPACE</span>
+                    <h2 id="login-title">Connexion</h2>
+                    <p>Heureux de vous retrouver !</p>
                 </div>
-            {% endif %}
 
-            <form method="post">
-                <div class="mb-3">
-                    <label for="username" class="form-label">
-                        Adresse email
-                    </label>
+                {% if error is defined and error %}
+                    <div class="login-alert" role="alert">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
 
-                    <input
-                            type="email"
-                            id="username"
-                            name="_username"
-                            value="{{ last_username }}"
-                            class="form-control"
-                            autocomplete="email"
-                            required
-                            autofocus
+                {{ form_start(form, {
+                    attr: {class: 'login-form'},
+                }) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="login-form__field">
+                        {{ form_label(form.email, null, {
+                            label_attr: {class: 'login-form__label'},
+                        }) }}
+
+                        {{ form_widget(form.email, {
+                            attr: {
+                                class: 'login-form__input',
+                                placeholder: 'nom@exemple.fr',
+                                autocomplete: 'email',
+                            },
+                        }) }}
+
+                        {{ form_errors(form.email) }}
+                    </div>
+
+                    <div
+                        class="login-form__field"
+                        data-controller="password-visibility"
                     >
-                </div>
+                        {{ form_label(form.password, null, {
+                            label_attr: {class: 'login-form__label'},
+                        }) }}
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">
-                        Mot de passe
-                    </label>
+                        <div class="password-field">
+                            {{ form_widget(form.password, {
+                                attr: {
+                                    class: 'login-form__input',
+                                    autocomplete: 'current-password',
+                                    placeholder: 'Votre mot de passe',
+                                    'data-password-visibility-target': 'input',
+                                },
+                            }) }}
 
-                    <div data-controller="password-visibility" class="password-field">
-                        <input
-                                type="password"
-                                id="password"
-                                name="_password"
-                                class="form-control"
-                                autocomplete="current-password"
-                                required
-                                data-password-visibility-target="input"
-                        >
-
-                        <button
+                            <button
                                 type="button"
                                 class="password-field__toggle"
                                 data-action="click->password-visibility#toggle"
-                                aria-label="Afficher le mot de passe"
                                 title="Afficher le mot de passe"
-                        >
-                            <i
+                                aria-label="Afficher le mot de passe"
+                            >
+                                <i
                                     class="fa-solid fa-eye-slash"
                                     data-password-visibility-target="icon"
-                            ></i>
-                        </button>
+                                    aria-hidden="true"
+                                ></i>
+                            </button>
+                        </div>
+
+                        {{ form_errors(form.password) }}
                     </div>
-                </div>
 
-                <div class="form-check mb-4">
-                    <input
-                            type="checkbox"
-                            id="remember_me"
-                            name="_remember_me"
-                            class="form-check-input"
-                    >
+                    <button type="submit" class="login-form__submit">
+                        Se connecter
+                    </button>
 
-                    <label class="form-check-label" for="remember_me">
-                        Se souvenir de moi
-                    </label>
-                </div>
+                {{ form_end(form) }}
 
-                <input
-                        type="hidden"
-                        name="_csrf_token"
-                        value="{{ csrf_token('authenticate') }}"
-                >
-
-                <button type="submit" class="btn btn-primary w-100 login-submit">
-                    <i class="fa-solid fa-right-to-bracket me-2"></i>
-                    Connexion
-                </button>
-            </form>
-
-            <div class="login-footer">
-                Pas encore de compte ? <a href="{{ path('app_register') }}">S'inscrire</a>
+                <p class="login-card__footer">
+                    <span aria-hidden="true">✳</span>
+                    Votre cuisine, vos envies, votre espace.
+                </p>
             </div>
 
-            <div class="login-footer">
-                Mot de passe oublié ? <a href="{{ path('app_forgot_password_request') }}">Réinitialiser</a>
-            </div>
-
-            <div class="login-footer">
-                Administration © {{ 'now'|date('Y') }}
-            </div>
-        </div>
-    </div>
+        </section>
+    </main>
 {% endblock %}

@@ -24,12 +24,6 @@
             referrerpolicy="no-referrer"
     >
 
-    {% block stylesheets %}
-        {# Avec AssetMapper, si app.css est importé dans app.js, importmap() s'en occupe. #}
-        {# Si ce n'est pas le cas, forcez le chargement de votre CSS personnalisé ICI pour qu'il passe APRES Bootstrap : #}
-        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
-    {% endblock %}
-
     {% block javascripts %}
         {# AssetMapper gère le point d'entrée unique de votre application JS et CSS #}
         {{ importmap('app') }}
@@ -43,6 +37,7 @@
 </head>
 <body>
     {{ include('partials/_navbar.html.twig') }}
+    {{ include('partials/flash.html.twig') }}
 
     {% block body %}{% endblock %}
 

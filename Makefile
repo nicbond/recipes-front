@@ -88,22 +88,6 @@ node_modules: package-lock.json
 	$(NPM) run dev
 	@touch -c node_modules
 
-npm_watch:
-	$(NPM) run watch
-
-npm_dev:
-	$(NPM) run dev
-
-yarn_install:
-	$(YARN) install
-	$(YARN) run dev
-
-yarn_watch:
-	$(YARN) run watch
-
-yarn_dev:
-	$(YARN) run dev
-
 .env.local: .env
 	@if [ -f .env.local ]; \
 	then\
