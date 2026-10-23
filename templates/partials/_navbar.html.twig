@@ -2,7 +2,7 @@
     <div class="site-navbar-inner">
 
         {# Bloc Logo / Marque #}
-        <a href="" class="site-navbar-brand" aria-label="Le Carnet Gourmand, accueil">
+        <a href="{{ path('app_home') }}" class="site-navbar-brand" aria-label="Le Carnet Gourmand, accueil">
             <span class="site-navbar-brand-icon" aria-hidden="true">✳</span>
             <span class="site-navbar-brand-text">
                 <span class="site-navbar-brand-name">Le Carnet Gourmand</span>
@@ -12,15 +12,33 @@
 
         {# Bloc Liens de navigation #}
         <div class="site-navbar-links">
-            <a href="" class="site-navbar-link {{ app.current_route == 'app_recipes' ? 'site-navbar-link-active' : '' }}">
+            <a href="{{ path('app_home') }}"
+               class="site-navbar-link {{ app.current_route == 'app_home' ? 'site-navbar-link-active' : '' }}">
                 Recettes
             </a>
 
-            <a href="" class="site-navbar-login">
+        {% if app.user %}
+            {# <a href="{{ path('app_account') }}" class="site-navbar-login">
+                <span>Mon compte</span>
+            </a> #}
+
+        <form action="{{ path('app_logout') }}" method="post">
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('logout') }}"
+            >
+            <button type="submit" class="site-navbar-login">
+                <span>Déconnexion</span>
+                <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
+            </button>
+        </form>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="site-navbar-login">
                 <span>Connexion</span>
                 <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
             </a>
+        {% endif %}
         </div>
-
     </div>
 </nav>
