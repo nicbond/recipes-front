@@ -1,25 +1,70 @@
-body {
-    background-color: white;
+/* =========================================================
+   LE CARNET GOURMAND — Styles globaux
+   ========================================================= */
+
+:root {
+    color-scheme: light;
+
+    /* Fonds */
+    --color-cream: #faf8f2;
+    --color-surface: #fffdf8;
+    --color-white: #fff;
+    --color-panna-cotta: #f3e5c8;
+
+    /* Verts */
+    --color-green: #355b43;
+    --color-green-dark: #244432;
+    --color-green-light: #e5ebdf;
+    --color-sage: #dce5d6;
+
+    /* Accents gourmands */
+    --color-terracotta: #c96f50;
+    --color-terracotta-dark: #ad593d;
+    --color-peach: #f5e2d5;
+    --color-yellow: #f1e7bd;
+
+    /* Textes et bordures */
+    --color-text: #29382e;
+    --color-muted: #72796f;
+    --color-border: #e8e5dc;
+
+    /* Erreurs */
+    --color-danger: #b42318;
+    --color-danger-text: #842d23;
+    --color-danger-border: #f0d2cd;
+    --color-danger-bg: #fff5f3;
+
+    /* Typographie */
+    --font-editorial: Georgia, "Times New Roman", serif;
+
+    /* Mise en page */
+    --content-width: 1440px;
+
+    /* Transitions */
+    --transition-fast: 180ms ease;
+
+    /* Ombres */
+    --shadow-card: 0 8px 24px rgb(41 56 46 / 8%);
+    --shadow-card-hover: 0 14px 32px rgb(41 56 46 / 14%);
+
+    /* Arrondis */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 22px;
 }
 
-/* ========================================
-HOME — Le Carnet Gourmand
-======================================== */
+body {
+    background-color: var(--color-white);
+}
+
+/* =========================================================
+   ACCUEIL — HOME
+   ========================================================= */
 
 .home-page {
-    --home-bg: #faf8f2;
-    --home-surface: #fffdf8;
-    --home-green: #355b43;
-    --home-green-dark: #244432;
-    --home-green-light: #e5ebdf;
-    --home-terracotta: #c96f50;
-    --home-peach: #f5e2d5;
-    --home-yellow: #f1e7bd;
-    --home-text: #29382e;
-    --home-muted: #72796f;
     overflow: hidden;
-    color: var(--home-text);
-    background: var(--home-bg);
+    color: var(--color-text);
+    background: var(--color-cream);
     font-family: inherit;
 }
 
@@ -43,13 +88,15 @@ HOME — Le Carnet Gourmand
 .home-page h1,
 .home-page h2,
 .home-page h3 {
-    color: var(--home-text);
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--color-text);
+    font-family: var(--font-editorial);
     font-weight: 500;
     letter-spacing: -0.035em;
 }
 
-/* Hero */
+/* ---------------------------------------------------------
+   HERO
+   --------------------------------------------------------- */
 
 .home-hero {
     position: relative;
@@ -57,7 +104,7 @@ HOME — Le Carnet Gourmand
     grid-template-columns: 1.05fr 0.95fr;
     align-items: center;
     gap: 2rem;
-    max-width: 1440px;
+    max-width: var(--content-width);
     min-height: 590px;
     margin: 0 auto;
     padding: 5rem clamp(1.5rem, 7vw, 7rem) 4.5rem;
@@ -74,7 +121,7 @@ HOME — Le Carnet Gourmand
     align-items: center;
     gap: 0.65rem;
     margin-bottom: 1.5rem;
-    color: var(--home-green);
+    color: var(--color-green);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -84,7 +131,7 @@ HOME — Le Carnet Gourmand
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--home-terracotta);
+    background: var(--color-terracotta);
 }
 
 .home-hero h1 {
@@ -96,14 +143,14 @@ HOME — Le Carnet Gourmand
 
 .home-hero h1 span {
     display: block;
-    color: var(--home-terracotta);
+    color: var(--color-terracotta);
     font-style: italic;
 }
 
 .home-hero-description {
     max-width: 500px;
     margin-bottom: 2rem;
-    color: var(--home-muted);
+    color: var(--color-muted);
     font-size: 1.05rem;
     line-height: 1.85;
 }
@@ -127,26 +174,22 @@ HOME — Le Carnet Gourmand
     font-size: 0.9rem;
     font-weight: 600;
     transition:
-        background-color 180ms ease,
-        color 180ms ease,
-        transform 180ms ease;
+        background-color var(--transition-fast),
+        color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .home-button-primary {
-    color: #fff;
-    background: var(--home-green);
+    color: var(--color-white);
+    background: var(--color-terracotta);
+    border-color: var(--color-terracotta);
 }
 
 .home-button-primary:hover {
-    color: #fff;
-    background: var(--home-green-dark);
+    color: var(--color-white);
+    background: var(--color-terracotta-dark);
+    border-color: var(--color-terracotta-dark);
     transform: translateY(-2px);
-}
-
-.home-button:focus-visible,
-.home-text-link:focus-visible {
-    outline: 3px solid var(--home-terracotta);
-    outline-offset: 4px;
 }
 
 .home-button-primary span {
@@ -154,13 +197,19 @@ HOME — Le Carnet Gourmand
 }
 
 .home-text-link {
-    color: var(--home-green);
+    color: var(--color-green);
     font-size: 0.9rem;
     font-weight: 600;
 }
 
 .home-text-link:hover {
-    color: var(--home-terracotta);
+    color: var(--color-terracotta);
+}
+
+.home-button:focus-visible,
+.home-text-link:focus-visible {
+    outline: 3px solid var(--color-terracotta);
+    outline-offset: 4px;
 }
 
 .home-hero-note {
@@ -168,16 +217,18 @@ HOME — Le Carnet Gourmand
     align-items: center;
     gap: 0.7rem;
     margin-top: 2.5rem;
-    color: var(--home-muted);
+    color: var(--color-muted);
     font-size: 0.82rem;
 }
 
 .home-note-icon {
-    color: var(--home-terracotta);
+    color: var(--color-terracotta);
     font-size: 1.4rem;
 }
 
-/* Illustration du hero, réalisée uniquement en CSS */
+/* ---------------------------------------------------------
+   ILLUSTRATION CSS DU HERO
+   --------------------------------------------------------- */
 
 .home-hero-visual {
     position: relative;
@@ -191,7 +242,7 @@ HOME — Le Carnet Gourmand
     position: absolute;
     top: 50%;
     left: 50%;
-    border: 1px solid rgba(53, 91, 67, 0.13);
+    border: 1px solid rgb(53 91 67 / 13%);
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
@@ -214,8 +265,8 @@ HOME — Le Carnet Gourmand
     width: 90px;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: #f0dca0;
-    opacity: 0.8;
+    background: var(--color-panna-cotta);
+    opacity: 0.9;
 }
 
 .home-visual-bowl {
@@ -225,12 +276,12 @@ HOME — Le Carnet Gourmand
     place-items: center;
     width: min(67%, 285px);
     aspect-ratio: 1;
-    border: 12px solid #fffdf8;
+    border: 12px solid var(--color-surface);
     border-radius: 50%;
     background: #d5a56f;
     box-shadow:
-        0 25px 55px rgba(75, 69, 46, 0.12),
-        inset 0 0 0 3px rgba(94, 72, 42, 0.12);
+        0 25px 55px rgb(75 69 46 / 12%),
+        inset 0 0 0 3px rgb(94 72 42 / 12%);
     transform: rotate(-9deg);
 }
 
@@ -250,17 +301,59 @@ HOME — Le Carnet Gourmand
     width: 25%;
     aspect-ratio: 1;
     border-radius: 50%;
-    box-shadow: inset -4px -5px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: inset -4px -5px 0 rgb(0 0 0 / 8%);
 }
 
-.home-food-one { top: 13%; left: 16%; background: #d7b86d; }
-.home-food-two { top: 20%; left: 53%; background: #d66d4e; }
-.home-food-three { top: 46%; left: 36%; background: #e5c87b; }
-.home-food-four { top: 54%; left: 67%; background: #c95743; }
-.home-food-five { top: 62%; left: 12%; background: #b6c777; }
-.home-food-six { top: 35%; left: 6%; width: 15%; background: #e7dba7; }
-.home-food-seven { top: 10%; left: 39%; width: 13%; background: #f0e5bc; }
-.home-food-eight { top: 69%; left: 46%; width: 15%; background: #e4d29c; }
+.home-food-one {
+    top: 13%;
+    left: 16%;
+    background: #d7b86d;
+}
+
+.home-food-two {
+    top: 20%;
+    left: 53%;
+    background: #d66d4e;
+}
+
+.home-food-three {
+    top: 46%;
+    left: 36%;
+    background: #e5c87b;
+}
+
+.home-food-four {
+    top: 54%;
+    left: 67%;
+    background: #c95743;
+}
+
+.home-food-five {
+    top: 62%;
+    left: 12%;
+    background: #b6c777;
+}
+
+.home-food-six {
+    top: 35%;
+    left: 6%;
+    width: 15%;
+    background: #e7dba7;
+}
+
+.home-food-seven {
+    top: 10%;
+    left: 39%;
+    width: 13%;
+    background: #f0e5bc;
+}
+
+.home-food-eight {
+    top: 69%;
+    left: 46%;
+    width: 15%;
+    background: #e4d29c;
+}
 
 .home-floating-card {
     position: absolute;
@@ -269,11 +362,11 @@ HOME — Le Carnet Gourmand
     align-items: center;
     gap: 0.75rem;
     padding: 0.9rem 1rem;
-    border: 1px solid rgba(53, 91, 67, 0.07);
+    border: 1px solid rgb(53 91 67 / 7%);
     border-radius: 10px;
-    background: var(--home-surface);
-    box-shadow: 0 12px 35px rgba(42, 54, 43, 0.09);
-    color: var(--home-text);
+    color: var(--color-text);
+    background: var(--color-surface);
+    box-shadow: 0 12px 35px rgb(42 54 43 / 9%);
     font-size: 0.75rem;
     font-weight: 600;
     line-height: 1.5;
@@ -301,18 +394,18 @@ HOME — Le Carnet Gourmand
 }
 
 .home-floating-icon {
-    color: var(--home-green);
-    background: var(--home-green-light);
+    color: var(--color-green);
+    background: var(--color-green-light);
 }
 
 .home-floating-heart {
-    color: var(--home-terracotta);
-    background: var(--home-peach);
+    color: var(--color-terracotta);
+    background: var(--color-peach);
 }
 
 .home-visual-sparkle {
     position: absolute;
-    color: var(--home-terracotta);
+    color: var(--color-terracotta);
 }
 
 .home-sparkle-one {
@@ -328,7 +421,9 @@ HOME — Le Carnet Gourmand
     font-size: 1.4rem;
 }
 
-/* Les trois valeurs */
+/* ---------------------------------------------------------
+   LES TROIS VALEURS
+   --------------------------------------------------------- */
 
 .home-values {
     display: grid;
@@ -337,8 +432,8 @@ HOME — Le Carnet Gourmand
     max-width: 1240px;
     margin: 0 auto;
     padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
-    border-top: 1px solid #e8e5dc;
-    border-bottom: 1px solid #e8e5dc;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .home-value {
@@ -349,7 +444,7 @@ HOME — Le Carnet Gourmand
 
 .home-value-number {
     padding-top: 0.25rem;
-    color: var(--home-terracotta);
+    color: var(--color-terracotta);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -363,15 +458,17 @@ HOME — Le Carnet Gourmand
 .home-value p {
     max-width: 250px;
     margin-bottom: 0;
-    color: var(--home-muted);
+    color: var(--color-muted);
     font-size: 0.88rem;
     line-height: 1.7;
 }
 
-/* Univers culinaire */
+/* ---------------------------------------------------------
+   UNIVERS CULINAIRES
+   --------------------------------------------------------- */
 
 .home-univers {
-    max-width: 1440px;
+    max-width: var(--content-width);
     margin: 0 auto;
     padding: 6rem clamp(1.5rem, 7vw, 7rem);
 }
@@ -398,7 +495,7 @@ HOME — Le Carnet Gourmand
 .home-section-heading > p {
     max-width: 340px;
     margin-bottom: 0.25rem;
-    color: var(--home-muted);
+    color: var(--color-muted);
     font-size: 0.95rem;
     line-height: 1.8;
 }
@@ -417,11 +514,31 @@ HOME — Le Carnet Gourmand
     overflow: hidden;
     padding: 1.5rem;
     border-radius: 8px;
+    transition:
+        box-shadow var(--transition-fast),
+        transform var(--transition-fast);
 }
 
-.home-category-card-green { background: #e6ebdf; }
-.home-category-card-peach { background: #f4e2d7; }
-.home-category-card-yellow { background: #f1e9c9; }
+.home-category-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+}
+
+.home-category-card-green {
+    background: var(--color-green-light);
+}
+
+.home-category-card-peach {
+    background: var(--color-peach);
+}
+
+.home-category-card-yellow {
+    background: var(--color-yellow);
+}
+
+.home-category-card-panna-cotta {
+    background: var(--color-panna-cotta);
+}
 
 .home-category-illustration {
     position: relative;
@@ -439,29 +556,34 @@ HOME — Le Carnet Gourmand
     place-items: center;
     width: 88px;
     height: 88px;
-    border: 1px solid rgba(53, 91, 67, 0.18);
+    border: 1px solid rgb(53 91 67 / 18%);
     border-radius: 50%;
-    color: var(--home-green);
-    background: rgba(255, 253, 248, 0.55);
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--color-green);
+    background: rgb(255 253 248 / 55%);
+    font-family: var(--font-editorial);
     font-size: 3rem;
 }
 
 .home-category-card-peach .home-category-symbol {
-    color: var(--home-terracotta);
-    border-color: rgba(201, 111, 80, 0.2);
+    border-color: rgb(201 111 80 / 20%);
+    color: var(--color-terracotta);
 }
 
 .home-category-card-yellow .home-category-symbol {
+    border-color: rgb(155 123 49 / 20%);
     color: #9b7b31;
-    border-color: rgba(155, 123, 49, 0.2);
+}
+
+.home-category-card-panna-cotta .home-category-symbol {
+    border-color: rgb(155 123 49 / 25%);
+    color: #856b2d;
 }
 
 .home-category-orbit {
     position: absolute;
     width: 150px;
     height: 150px;
-    border: 1px dashed rgba(53, 91, 67, 0.25);
+    border: 1px dashed rgb(53 91 67 / 25%);
     border-radius: 50%;
 }
 
@@ -473,19 +595,50 @@ HOME — Le Carnet Gourmand
 .home-category-label {
     display: block;
     margin-bottom: 0.75rem;
-    color: var(--home-green);
+    color: var(--color-green);
     font-size: 0.64rem;
     font-weight: 700;
     letter-spacing: 0.1em;
 }
 
-.home-category-card-peach .home-category-label { color: #99543e; }
-.home-category-card-yellow .home-category-label { color: #856b2d; }
-.home-category-content h3 { margin-bottom: 0.7rem; font-size: 1.55rem; line-height: 1.2; }
-.home-category-content p { max-width: 330px; margin-bottom: 0; color: #5f685e; font-size: 0.88rem; line-height: 1.75; }
-.home-category-decoration { position: absolute; right: 1.25rem; bottom: 1rem; color: rgba(41, 56, 46, 0.12); font-family: Georgia, "Times New Roman", serif; font-size: 3rem; }
+.home-category-card-peach .home-category-label {
+    color: #99543e;
+}
 
-/* Citation */
+.home-category-card-yellow .home-category-label {
+    color: #856b2d;
+}
+
+.home-category-card-panna-cotta .home-category-label {
+    color: #856b2d;
+}
+
+.home-category-content h3 {
+    margin-bottom: 0.7rem;
+    font-size: 1.55rem;
+    line-height: 1.2;
+}
+
+.home-category-content p {
+    max-width: 330px;
+    margin-bottom: 0;
+    color: #5f685e;
+    font-size: 0.88rem;
+    line-height: 1.75;
+}
+
+.home-category-decoration {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1rem;
+    color: rgb(41 56 46 / 12%);
+    font-family: var(--font-editorial);
+    font-size: 3rem;
+}
+
+/* ---------------------------------------------------------
+   CITATION
+   --------------------------------------------------------- */
 
 .home-quote {
     display: flex;
@@ -499,8 +652,8 @@ HOME — Le Carnet Gourmand
 
 .home-quote-mark {
     height: 65px;
-    color: var(--home-terracotta);
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--color-terracotta);
+    font-family: var(--font-editorial);
     font-size: 6rem;
     line-height: 1;
 }
@@ -508,19 +661,21 @@ HOME — Le Carnet Gourmand
 .home-quote p {
     max-width: 740px;
     margin-bottom: 1.5rem;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-editorial);
     font-size: clamp(1.7rem, 3.4vw, 2.7rem);
     line-height: 1.35;
 }
 
 .home-quote-caption {
-    color: var(--home-muted);
+    color: var(--color-muted);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.16em;
 }
 
-/* Bandeau final */
+/* ---------------------------------------------------------
+   BANDEAU FINAL
+   --------------------------------------------------------- */
 
 .home-final-cta {
     position: relative;
@@ -528,13 +683,13 @@ HOME — Le Carnet Gourmand
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-    max-width: 1440px;
+    max-width: var(--content-width);
     margin: 0 auto 3rem;
     padding: 3.5rem clamp(1.5rem, 7vw, 7rem);
     overflow: hidden;
     border-radius: 8px;
-    color: #fff;
-    background: var(--home-green);
+    color: var(--color-white);
+    background: var(--color-green);
 }
 
 .home-final-cta > div {
@@ -549,7 +704,7 @@ HOME — Le Carnet Gourmand
 
 .home-final-cta h2 {
     margin-bottom: 1rem;
-    color: #fff;
+    color: var(--color-white);
     font-size: clamp(2rem, 3.5vw, 3.2rem);
     line-height: 1.15;
 }
@@ -567,7 +722,7 @@ HOME — Le Carnet Gourmand
     z-index: 1;
     flex-shrink: 0;
     color: #e7d8a8;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-editorial);
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-style: italic;
     line-height: 1.05;
@@ -575,296 +730,166 @@ HOME — Le Carnet Gourmand
     transform: rotate(-8deg);
 }
 
-/* Responsive Home Page */
-
-@media (min-width: 1441px) {
-    .home-final-cta {
-        margin-right: auto;
-        margin-left: auto;
-    }
-}
-
-@media (max-width: 1000px) {
-    .home-hero {
-        grid-template-columns: 1fr 0.8fr;
-        gap: 1rem;
-        padding-top: 4rem;
-        padding-bottom: 3.5rem;
-    }
-    .home-hero-visual {
-        min-height: 350px;
-    }
-    .home-visual-bowl {
-        width: min(72%, 245px);
-    }
-    .home-floating-card {
-        gap: 0.5rem;
-        padding: 0.7rem;
-        font-size: 0.68rem;
-    }
-    .home-values {
-        gap: 1.25rem;
-    }
-    .home-category-card {
-        padding: 1.25rem;
-    }
-    .home-category-content h3 {
-        font-size: 1.35rem;
-    }
-}
-
-@media (max-width: 767px) {
-    .home-hero {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 3.5rem 1.5rem 2.5rem;
-    }
-    .home-hero h1 {
-        font-size: clamp(2.65rem, 10vw, 4rem);
-    }
-    .home-hero-description {
-        font-size: 0.98rem;
-    }
-    .home-hero-visual {
-        min-height: 340px;
-        margin-top: 0.5rem;
-    }
-    .home-visual-orbit-outer {
-        width: min(85%, 340px);
-    }
-    .home-visual-orbit-inner {
-        width: min(67%, 270px);
-    }
-    .home-visual-bowl {
-        width: min(62%, 230px);
-    }
-    .home-floating-card-top {
-        left: 2%;
-    }
-    .home-floating-card-bottom {
-        right: 2%;
-    }
-    .home-values {
-        grid-template-columns: 1fr;
-        gap: 1.75rem;
-        padding: 2.5rem 1rem;
-    }
-}
-
-/* ========================================
-NAVBAR — Le Carnet Gourmand (CORRIGÉ & FORCE)
-======================================== */
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 
 nav.site-navbar {
     position: relative;
-    z-index: 10000 !important;
-    width: 100% !important;
-    border-bottom: 1px solid #e8e5dc !important;
-    background: #faf8f2 !important;
-    display: block !important;
-    box-sizing: border-box !important;
+    z-index: 100;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-cream);
 }
 
-nav.site-navbar .site-navbar-inner {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 2rem !important;
-    max-width: 1440px !important;
-    min-height: 88px !important;
-    margin: 0 auto !important;
-    padding: 1rem clamp(1.5rem, 7vw, 7rem) !important;
-    box-sizing: border-box !important;
+.site-navbar-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: var(--content-width);
+    min-height: 88px;
+    margin: 0 auto;
+    padding: 1rem clamp(1.5rem, 7vw, 7rem);
+    box-sizing: border-box;
 }
 
-nav.site-navbar .site-navbar-brand {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.8rem !important;
-    color: #29382e !important;
-    text-decoration: none !important;
+.site-navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--color-text);
+    text-decoration: none;
 }
 
-nav.site-navbar .site-navbar-brand:hover {
-    color: #355b43 !important;
+.site-navbar-brand:hover {
+    color: var(--color-green);
 }
 
-nav.site-navbar .site-navbar-brand-icon {
-    display: grid !important;
-    place-items: center !important;
-    width: 43px !important;
-    height: 43px !important;
-    flex-shrink: 0 !important;
-    border: 1px solid #d8dfd2 !important;
-    border-radius: 50% !important;
-    color: #355b43 !important;
-    background: #e5ebdf !important;
-    font-size: 1.6rem !important;
+.site-navbar-brand-icon {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    border: 1px solid #d8dfd2;
+    border-radius: 50%;
+    color: var(--color-green);
+    background: var(--color-green-light);
+    font-size: 1.6rem;
 }
 
-nav.site-navbar .site-navbar-brand-text {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.25rem !important;
+.site-navbar-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
-nav.site-navbar .site-navbar-brand-name {
-    font-family: Georgia, "Times New Roman", serif !important;
-    font-size: 1.35rem !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.035em !important;
+.site-navbar-brand-name {
+    font-family: var(--font-editorial);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.035em;
 }
 
-nav.site-navbar .site-navbar-brand-tagline {
-    color: #72796f !important;
-    font-size: 0.59rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.15em !important;
+.site-navbar-brand-tagline {
+    color: var(--color-muted);
+    font-size: 0.59rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
 }
 
-nav.site-navbar .site-navbar-links {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: clamp(1.5rem, 4vw, 3.5rem) !important;
+.site-navbar-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
 }
 
-nav.site-navbar .site-navbar-link {
-    position: relative !important;
-    padding: 0.6rem 0 !important;
-    color: #59645a !important;
-    font-size: 0.92rem !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-    transition: color 180ms ease !important;
+.site-navbar-links form {
+    margin: 0;
 }
 
-nav.site-navbar .site-navbar-link:hover,
-nav.site-navbar .site-navbar-link-active {
-    color: #355b43 !important;
+.site-navbar-link {
+    position: relative;
+    padding: 0.6rem 0;
+    color: #59645a;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
 
-nav.site-navbar .site-navbar-link-active::after {
-    position: absolute !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    height: 2px !important;
-    background: #c96f50 !important;
-    content: "" !important;
+.site-navbar-link:hover,
+.site-navbar-link-active {
+    color: var(--color-green);
 }
 
-nav.site-navbar .site-navbar-login {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 1rem !important;
-    min-height: 44px !important;
-    padding: 0.7rem 1.15rem !important;
-    border: 1px solid #355b43 !important;
-    border-radius: 5px !important;
-    color: #fff !important;
-    background: #355b43 !important;
-    font-size: 0.87rem !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
+.site-navbar-link-active::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--color-terracotta);
+    content: "";
+}
+
+.site-navbar-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 44px;
+    padding: 0.7rem 1.15rem;
+    border: 1px solid var(--color-green);
+    border-radius: 5px;
+    color: var(--color-white);
+    background: var(--color-green);
+    font-family: inherit;
+    font-size: 0.87rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
     transition:
-        background-color 180ms ease,
-        border-color 180ms ease,
-        transform 180ms ease !important;
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
-nav.site-navbar .site-navbar-login:hover {
-    border-color: #244432 !important;
-    color: #fff !important;
-    background: #244432 !important;
-    transform: translateY(-1px) !important;
+.site-navbar-login:hover {
+    border-color: var(--color-green-dark);
+    color: var(--color-white);
+    background: var(--color-green-dark);
+    transform: translateY(-1px);
 }
 
-nav.site-navbar .site-navbar-login-arrow {
-    font-size: 1rem !important;
+.site-navbar-login-arrow {
+    font-size: 1rem;
 }
 
-nav.site-navbar a:focus-visible {
-    outline: 3px solid #c96f50 !important;
-    outline-offset: 4px !important;
+nav.site-navbar a:focus-visible,
+nav.site-navbar button:focus-visible {
+    outline: 3px solid var(--color-terracotta);
+    outline-offset: 4px;
 }
 
-/* Responsive Navbar */
-
-@media (max-width: 600px) {
-    nav.site-navbar .site-navbar-inner {
-        min-height: 76px !important;
-        gap: 1rem !important;
-        padding: 0.9rem 1rem !important;
-    }
-    nav.site-navbar .site-navbar-brand {
-        gap: 0.55rem !important;
-    }
-    nav.site-navbar .site-navbar-brand-icon {
-        width: 35px !important;
-        height: 35px !important;
-        font-size: 1.3rem !important;
-    }
-    nav.site-navbar .site-navbar-brand-name {
-        font-size: 1rem !important;
-    }
-    nav.site-navbar .site-navbar-brand-tagline {
-        font-size: 0.48rem !important;
-        letter-spacing: 0.1em !important;
-    }
-    nav.site-navbar .site-navbar-links {
-        gap: 1rem !important;
-    }
-    nav.site-navbar .site-navbar-link {
-        font-size: 0.82rem !important;
-    }
-    nav.site-navbar .site-navbar-login {
-        min-height: 40px !important;
-        gap: 0.35rem !important;
-        padding: 0.6rem 0.7rem !important;
-        font-size: 0.8rem !important;
-    }
-    nav.site-navbar .site-navbar-login-arrow {
-        display: none !important;
-    }
-}
-
-@media (max-width: 380px) {
-    nav.site-navbar .site-navbar-brand-tagline {
-        display: none !important;
-    }
-    nav.site-navbar .site-navbar-brand-name {
-        max-width: 120px !important;
-        font-size: 0.95rem !important;
-    }
-    nav.site-navbar .site-navbar-links {
-        gap: 0.75rem !important;
-    }
-}
-
-
-/* ==========================================================
-   LOGIN — LE CARNET GOURMAND
-========================================================== */
+/* =========================================================
+   CONNEXION
+   ========================================================= */
 
 .login-page {
-    --login-green: #315b43;
-    --login-green-dark: #244533;
-    --login-cream: #f7f5ee;
-    --login-text: #26352c;
-    --login-muted: #778078;
-    --login-border: #e3e6df;
-
-    min-height: calc(100vh - 95px);
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: calc(100vh - 88px);
     padding: 56px 24px;
-    background:
-        radial-gradient(ellipse at 12% 15%, #e9eee3 0, transparent 34%),
-        var(--login-cream);
+    background: var(--color-cream);
 }
 
 .login-card {
@@ -874,10 +899,10 @@ nav.site-navbar a:focus-visible {
     max-width: 1040px;
     min-height: 570px;
     overflow: hidden;
-    background: #fff;
-    border: 1px solid rgba(49, 91, 67, 0.08);
+    border: 1px solid rgb(49 91 67 / 8%);
     border-radius: 22px;
-    box-shadow: 0 24px 70px rgba(37, 54, 42, 0.10);
+    background: var(--color-white);
+    box-shadow: 0 24px 70px rgb(37 54 42 / 10%);
 }
 
 /* Panneau éditorial */
@@ -888,44 +913,56 @@ nav.site-navbar a:focus-visible {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: 64px 48px;
     overflow: hidden;
-    color: #fff;
-    background: var(--login-green);
+    padding: 64px 48px;
+    color: var(--color-white);
+    background: var(--color-green);
 }
 
 .login-card__intro::before,
 .login-card__intro::after {
     position: absolute;
-    content: "";
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgb(255 255 255 / 12%);
     border-radius: 50%;
+    content: "";
     pointer-events: none;
 }
 
 .login-card__intro::before {
-    width: 320px;
-    height: 320px;
     top: -130px;
     right: -140px;
+    width: 320px;
+    height: 320px;
 }
 
 .login-card__intro::after {
-    width: 250px;
-    height: 250px;
     right: -95px;
     bottom: -115px;
+    width: 250px;
+    height: 250px;
 }
 
 .login-card__eyebrow,
 .login-heading__label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    position: relative;
 }
 
 .login-card__eyebrow {
     color: #d9e5d5;
+}
+
+.login-heading__label {
+    color: var(--color-green);
+}
+
+.login-heading__label::before {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 8px 2px 0;
+    border-radius: 50%;
+    background: var(--color-terracotta);
+    content: "";
 }
 
 .login-card__illustration {
@@ -934,9 +971,9 @@ nav.site-navbar a:focus-visible {
     width: 66px;
     height: 66px;
     margin: 38px 0 28px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgb(255 255 255 / 25%);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.10);
+    background: rgb(255 255 255 / 10%);
 }
 
 .login-card__illustration span {
@@ -947,8 +984,8 @@ nav.site-navbar a:focus-visible {
 .login-card__intro h1 {
     max-width: 370px;
     margin: 0 0 22px;
-    color: #fff;
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--color-white);
+    font-family: var(--font-editorial);
     font-size: clamp(2rem, 3vw, 2.8rem);
     font-weight: 500;
     line-height: 1.2;
@@ -958,7 +995,7 @@ nav.site-navbar a:focus-visible {
 .login-card__description {
     max-width: 350px;
     margin: 0;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgb(255 255 255 / 78%);
     font-size: 1rem;
     line-height: 1.85;
 }
@@ -969,7 +1006,7 @@ nav.site-navbar a:focus-visible {
     gap: 12px;
     margin-top: 42px;
     color: #e0e9dc;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-editorial);
     font-size: 0.95rem;
     font-style: italic;
 }
@@ -993,14 +1030,10 @@ nav.site-navbar a:focus-visible {
     margin-bottom: 36px;
 }
 
-.login-heading__label {
-    color: var(--login-green);
-}
-
 .login-heading h2 {
     margin: 12px 0 8px;
-    color: var(--login-text);
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--color-text);
+    font-family: var(--font-editorial);
     font-size: 2.5rem;
     font-weight: 600;
     letter-spacing: -0.04em;
@@ -1008,7 +1041,7 @@ nav.site-navbar a:focus-visible {
 
 .login-heading p {
     margin: 0;
-    color: var(--login-muted);
+    color: var(--color-muted);
     font-size: 0.98rem;
 }
 
@@ -1019,7 +1052,7 @@ nav.site-navbar a:focus-visible {
 .login-form__label {
     display: block;
     margin-bottom: 9px;
-    color: var(--login-text);
+    color: var(--color-text);
     font-size: 0.9rem;
     font-weight: 600;
 }
@@ -1029,13 +1062,15 @@ nav.site-navbar a:focus-visible {
     width: 100%;
     min-height: 51px;
     padding: 12px 15px;
-    color: var(--login-text);
-    background: #fff;
-    border: 1px solid var(--login-border);
+    border: 1px solid var(--color-border);
     border-radius: 9px;
+    color: var(--color-text);
+    background: var(--color-white);
     font-size: 0.95rem;
     box-shadow: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color 200ms ease,
+        box-shadow 200ms ease;
 }
 
 .login-form__input::placeholder {
@@ -1043,18 +1078,18 @@ nav.site-navbar a:focus-visible {
 }
 
 .login-form__input:focus {
-    border-color: var(--login-green);
+    border-color: var(--color-green);
     outline: 0;
-    box-shadow: 0 0 0 4px rgba(49, 91, 67, 0.10);
+    box-shadow: 0 0 0 4px rgb(49 91 67 / 10%);
 }
 
-/* Toggle mot de passe */
+/* Affichage du mot de passe */
 
 .password-field {
     position: relative;
 }
 
-.password-field .form-control {
+.password-field .login-form__input {
     padding-right: 3rem;
 }
 
@@ -1062,29 +1097,29 @@ nav.site-navbar a:focus-visible {
     position: absolute;
     top: 50%;
     right: 0.75rem;
-    transform: translateY(-50%);
     display: grid;
     place-items: center;
     width: 30px;
     height: 34px;
-    border: 0;
     padding: 0;
-    background: transparent;
+    border: 0;
+    border-radius: 5px;
     color: #6c757d;
+    background: transparent;
     cursor: pointer;
+    transform: translateY(-50%);
 }
 
 .password-field__toggle:hover {
-    color: var(--login-green);
+    color: var(--color-green);
 }
 
 .password-field__toggle:focus-visible {
-    border-radius: 5px;
-    outline: 2px solid var(--login-green);
+    outline: 2px solid var(--color-green);
     outline-offset: 2px;
 }
 
-/* Bouton principal */
+/* Bouton de connexion */
 
 .login-form__submit {
     display: flex;
@@ -1094,36 +1129,39 @@ nav.site-navbar a:focus-visible {
     min-height: 52px;
     margin-top: 8px;
     padding: 13px 20px;
-    border: 1px solid var(--login-green);
+    border: 1px solid var(--color-green);
     border-radius: 9px;
-    color: #fff;
-    background: var(--login-green);
+    color: var(--color-white);
+    background: var(--color-green);
     font-size: 0.98rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition:
+        background-color 200ms ease,
+        border-color 200ms ease,
+        transform 200ms ease;
 }
 
 .login-form__submit:hover {
-    border-color: var(--login-green-dark);
-    background: var(--login-green-dark);
+    border-color: var(--color-green-dark);
+    background: var(--color-green-dark);
     transform: translateY(-1px);
 }
 
 .login-form__submit:focus-visible {
-    outline: 3px solid rgba(49, 91, 67, 0.25);
+    outline: 3px solid rgb(49 91 67 / 25%);
     outline-offset: 3px;
 }
 
-/* Messages */
+/* Erreurs et messages */
 
 .login-alert {
     margin-bottom: 22px;
     padding: 13px 15px;
-    border: 1px solid #f0d2cd;
+    border: 1px solid var(--color-danger-border);
     border-radius: 8px;
-    color: #842d23;
-    background: #fff5f3;
+    color: var(--color-danger-text);
+    background: var(--color-danger-bg);
     font-size: 0.9rem;
 }
 
@@ -1131,32 +1169,184 @@ nav.site-navbar a:focus-visible {
 .login-form .form-error-message {
     display: block;
     margin-top: 7px;
-    color: #b42318;
+    color: var(--color-danger);
     font-size: 0.85rem;
 }
 
 .login-card__footer {
     margin: 32px 0 0;
-    color: var(--login-muted);
+    color: var(--color-muted);
     font-size: 0.8rem;
     text-align: center;
 }
 
 .login-card__footer span {
     margin-right: 5px;
-    color: var(--login-green);
+    color: var(--color-green);
 }
 
-/* Responsive */
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* Tablettes */
+
+@media (max-width: 1000px) {
+    .home-category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-category-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .login-card__intro {
+        padding: 48px 36px;
+    }
+}
+
+/* Navbar compacte */
+
+@media (max-width: 600px) {
+    .site-navbar-inner {
+        min-height: 76px;
+        gap: 1rem;
+        padding: 0.9rem 1rem;
+    }
+
+    .site-navbar-brand {
+        gap: 0.55rem;
+    }
+
+    .site-navbar-brand-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+
+    .site-navbar-brand-name {
+        font-size: 1rem;
+    }
+
+    .site-navbar-brand-tagline {
+        font-size: 0.48rem;
+        letter-spacing: 0.1em;
+    }
+
+    .site-navbar-links {
+        gap: 1rem;
+    }
+
+    .site-navbar-link {
+        font-size: 0.82rem;
+    }
+
+    .site-navbar-login {
+        min-height: 40px;
+        gap: 0.35rem;
+        padding: 0.6rem 0.7rem;
+        font-size: 0.8rem;
+    }
+
+    .site-navbar-login-arrow {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .site-navbar-brand-tagline {
+        display: none;
+    }
+
+    .site-navbar-brand-name {
+        max-width: 120px;
+        font-size: 0.95rem;
+    }
+
+    .site-navbar-links {
+        gap: 0.75rem;
+    }
+}
+
+/* Accueil et connexion sur mobile */
 
 @media (max-width: 767.98px) {
+    .home-hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        padding: 3.5rem 1.5rem 2.5rem;
+    }
+
+    .home-hero h1 {
+        font-size: clamp(2.65rem, 10vw, 4rem);
+    }
+
+    .home-hero-description {
+        font-size: 0.98rem;
+    }
+
+    .home-hero-visual {
+        min-height: 340px;
+        margin-top: 0.5rem;
+    }
+
+    .home-visual-orbit-outer {
+        width: min(85%, 340px);
+    }
+
+    .home-visual-orbit-inner {
+        width: min(67%, 270px);
+    }
+
+    .home-visual-bowl {
+        width: min(62%, 230px);
+    }
+
+    .home-floating-card-top {
+        left: 2%;
+    }
+
+    .home-floating-card-bottom {
+        right: 2%;
+    }
+
+    .home-values {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.75rem;
+        padding: 2.5rem 1rem;
+    }
+
+    .home-section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .home-category-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .home-category-card:last-child {
+        grid-column: auto;
+    }
+
+    .home-final-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .home-final-decoration {
+        align-self: flex-end;
+    }
+
     .login-page {
         min-height: auto;
         padding: 28px 16px 40px;
     }
 
     .login-card {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         max-width: 480px;
         border-radius: 16px;
     }
@@ -1203,9 +1393,23 @@ nav.site-navbar a:focus-visible {
     }
 }
 
+/* =========================================================
+   ACCESSIBILITÉ — MOUVEMENTS RÉDUITS
+   ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
-    .login-form__input,
-    .login-form__submit {
-        transition: none;
+    .home-page *,
+    .home-page *::before,
+    .home-page *::after,
+    .site-navbar *,
+    .site-navbar *::before,
+    .site-navbar *::after,
+    .login-page *,
+    .login-page *::before,
+    .login-page *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
     }
 }
