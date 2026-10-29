@@ -1,4 +1,4 @@
-<div class="flash-container mb-4">
+<div class="flash-container text-center mb-4">
     {% for type, messages in app.flashes %}
         <div class="alert alert-{{ type }} mb-0 m-0">
             {{ messages|join('. ') }}
