@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compte activé{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success"
+                               style="font-size: 3rem;"></i>
+                        </div>
+
+                        <h1 class="h3 mb-3">Compte activé !</h1>
+
+                        <p>
+                            Votre adresse e-mail a bien été vérifiée.
+                            Vous pouvez maintenant vous connecter.
+                        </p>
+
+                        <a href="{{ path('app_login') }}"
+                           class="btn btn-primary mt-3">
+                            Me connecter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

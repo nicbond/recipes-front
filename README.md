@@ -1,11 +1,8 @@
 # Recipes Front
 
-Symfony 7.4 application providing the frontend interface for the Recipes
-project.
+Symfony 7.4 application providing the frontend interface for the Recipes project.
 
-This project is separated from the backend and communicates with it
-through HTTP API requests. It focuses on rendering the user interface,
-handling user authentication, and managing the frontend session.
+This project is separated from the backend and communicates with it through HTTP API requests. It focuses on rendering the user interface, handling user authentication, managing the frontend session, and providing Consumer account verification.
 
 ## Features
 
@@ -18,12 +15,15 @@ handling user authentication, and managing the frontend session.
 * Flash notification explaining when the session has expired
 * Role-based access control for protected frontend pages
 * CSRF protection for logout
-* Centralized communication with the backend API through Symfony HttpClient
-* Handling of invalid credentials and unavailable authentication services
+* Consumer email verification through a dedicated frontend page.
+* Explicit user action required to activate a Consumer account.
+* Forwarding of signed verification requests to the backend API.
+* Centralized communication with the backend API through Symfony HttpClient.
+* Handling of invalid credentials, expired verification links, and unavailable backend services.
 
 ## Tech Stack
 
-* PHP 8.3
+* PHP 8.4
 * Symfony 7.4
 * Twig
 * Symfony Security
@@ -38,7 +38,7 @@ handling user authentication, and managing the frontend session.
 * Twig CS Fixer
 * GrumPHP
 
-> See [TECHNICAL.md](TECHNICAL.md) for a detailed description of the architecture and implementation choices.
+See [TECHNICAL.md](TECHNICAL.md) for a detailed description of the architecture and implementation choices.
 
 ## Requirements
 
@@ -56,10 +56,23 @@ handling user authentication, and managing the frontend session.
 
 ## Environment variables
 
+The frontend uses the following environment variables to communicate with the backend:
+
 ```dotenv
-# Application URL (used for signed URLs in emails)
-DEFAULT_URI=http://localhost:8089
+# Internal backend API URL (Docker network)
+API_BACK_URL=http://recettes_apache/api
+
+# Backend public host used to validate signed Consumer verification URLs
+API_BACK_PUBLIC_HOST=localhost:8088
 ```
+
+`API_BACK_URL` must use an address reachable from inside the frontend PHP container. In the local Docker environment, the backend is reached through its Docker container hostname.
+
+`API_BACK_PUBLIC_HOST` must match the backend host used to generate signed Consumer verification URLs. It is used specifically when forwarding the Consumer activation request to the backend.
+
+The backend's `DEFAULT_URI` is configured separately in the backend project and must match the canonical URL used to generate signed verification links.
+
+See the backend documentation for its own environment configuration.
 
 ## Useful commands
 
@@ -87,7 +100,7 @@ php bin/console asset-map:compile
 php bin/phpunit
 php bin/phpunit --filter testIndex
 php bin/phpunit --testdox
-
+```
 
 ## Code Quality
 

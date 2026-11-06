@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vérification de votre compte{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center p-4">
+                        {% if isValidRequest %}
+                            <h1 class="h3 mb-3">Vérification de votre compte</h1>
+
+                            <p>
+                                Merci pour votre inscription !
+                                Cliquez sur le bouton ci-dessous pour activer votre compte.
+                            </p>
+
+                            <form
+                                action="{{ path('app_verify_consumer_account_submit') }}"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="{{ verificationData.id }}"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="token"
+                                    value="{{ verificationData.token }}"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="expires"
+                                    value="{{ verificationData.expires }}"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="signature"
+                                    value="{{ verificationData.signature }}"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="verification_query"
+                                    value="{{ queryString }}"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="_csrf_token"
+                                    value="{{ csrf_token('activate_consumer_' ~ verificationData.id) }}"
+                                >
+
+                                <button type="submit" class="btn btn-primary">
+                                    Activer mon compte
+                                </button>
+                            </form>
+                        {% else %}
+                            <h1 class="h3 mb-3">Lien invalide</h1>
+
+                            <p>
+                                Le lien de vérification est incomplet ou invalide.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
