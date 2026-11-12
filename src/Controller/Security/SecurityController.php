@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use App\Form\Security\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

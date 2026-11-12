@@ -1413,3 +1413,127 @@ nav.site-navbar button:focus-visible {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+/* =========================================================
+   INSCRIPTION
+   ========================================================= */
+
+.registration-card {
+    max-width: 1120px;
+}
+
+.registration-card__form {
+    justify-content: flex-start;
+    padding-top: 48px;
+    padding-bottom: 48px;
+}
+
+.registration-form__section + .registration-form__section {
+    margin-top: 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.registration-form__section-title {
+    margin: 0 0 20px;
+    color: var(--color-green);
+    font-family: var(--font-editorial);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.registration-form__identity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 18px;
+}
+
+.registration-form .login-form__field {
+    min-width: 0;
+    margin-bottom: 18px;
+}
+
+.registration-form .login-form__input {
+    box-sizing: border-box;
+}
+
+.registration-form select.login-form__input {
+    cursor: pointer;
+}
+
+.registration-form input[type="date"].login-form__input {
+    color: var(--color-text);
+}
+
+.registration-form .invalid-feedback,
+.registration-form .form-error-message {
+    display: block;
+    margin-top: 7px;
+    color: var(--color-danger);
+    font-size: 0.85rem;
+}
+
+.registration-form .form-error-message {
+    margin-bottom: 16px;
+}
+
+.registration-card .login-card__footer a {
+    color: var(--color-green);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.registration-card .login-card__footer a:hover {
+    color: var(--color-terracotta);
+}
+
+/* Responsive inscription */
+
+@media (max-width: 767.98px) {
+    .registration-card__form {
+        padding-top: 34px;
+        padding-bottom: 34px;
+    }
+
+    .registration-form__identity-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+}
+
+/* =========================================================
+   LIEN VERS L'INSCRIPTION
+   ========================================================= */
+
+.login-card__footer {
+    justify-content: center;
+    text-align: center;
+}
+
+.login-card__registration {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    margin: 24px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.login-card__registration a {
+    color: var(--color-green);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.login-card__registration a:hover {
+    color: var(--color-terracotta);
+    text-decoration: underline;
+}

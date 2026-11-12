@@ -6,3 +6,19 @@ form:
     required: "Veuillez saisir un mot de passe."
     valid: "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial."
     length_min: "Le mot de passe doit contenir au moins {{ limit }} caractères."
+  password_confirmation:
+    required: "Veuillez confirmer votre mot de passe."
+    mismatch: "Les deux mots de passe ne correspondent pas."
+  gender:
+    required: "Veuillez sélectionner votre civilité."
+  firstname:
+    required: "Veuillez saisir votre prénom."
+    max_length: "Votre prénom ne doit pas dépasser {{ limit }} caractères."
+    invalid: "Votre prénom contient des caractères non autorisés."
+  lastname:
+    required: "Veuillez saisir votre nom."
+    max_length: "Votre nom ne doit pas dépasser {{ limit }} caractères."
+    invalid: "Votre nom contient des caractères non autorisés."
+  birthdate:
+    required: "Veuillez saisir votre date de naissance."
+    invalid: "Votre date de naissance doit être postérieure au 01/01/1900."

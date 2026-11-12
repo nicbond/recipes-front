@@ -104,10 +104,17 @@
 
                 {{ form_end(form) }}
 
-                <p class="login-card__footer">
+                <div class="login-card__footer">
                     <span aria-hidden="true">✳</span>
-                    Votre cuisine, vos envies, votre espace.
-                </p>
+                    <span>Votre cuisine, vos envies, votre espace.</span>
+                </div>
+
+                <div class="login-card__registration">
+                    <span>Pas encore inscrit ?</span>
+                    <a href="{{ path('app_consumer_registration') }}">
+                        Créez votre compte
+                    </a>
+                </div>
             </div>
 
         </section>

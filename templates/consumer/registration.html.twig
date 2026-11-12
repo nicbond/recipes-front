@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription | Le Carnet Gourmand{% endblock %}
+
+{% block body %}
+    <main class="login-page registration-page">
+        <section class="login-card registration-card" aria-labelledby="registration-title">
+
+            <div class="login-card__intro">
+                <span class="login-card__eyebrow">BIENVENUE CHEZ VOUS</span>
+
+                <div class="login-card__illustration" aria-hidden="true">
+                    <span>✳</span>
+                </div>
+
+                <h1>La gourmandise se partage.</h1>
+
+                <p class="login-card__description">
+                    Créez votre espace personnel et retrouvez toutes vos envies culinaires
+                    au même endroit. Découvrez, partagez et savourez chaque instant.
+                </p>
+
+                <div class="login-card__signature">
+                    <span class="login-card__signature-line"></span>
+                    <span>La cuisine du quotidien</span>
+                </div>
+            </div>
+
+            <div class="login-card__form registration-card__form">
+                <div class="login-heading">
+                    <span class="login-heading__label">VOTRE ESPACE</span>
+                    <h2 id="registration-title">Créer un compte</h2>
+                    <p>Quelques informations pour commencer.</p>
+                </div>
+
+                {{ form_start(form, {
+                    attr: {
+                        class: 'login-form registration-form',
+                    },
+                }) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="registration-form__section">
+                        <h3 class="registration-form__section-title">
+                            Informations personnelles
+                        </h3>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.identity.gender, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.identity.gender, {
+                                attr: {
+                                    class: 'login-form__input',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.identity.gender) }}
+                        </div>
+
+                        <div class="registration-form__identity-grid">
+                            <div class="login-form__field">
+                                {{ form_label(form.identity.firstname, null, {
+                                    label_attr: {class: 'login-form__label'},
+                                }) }}
+
+                                {{ form_widget(form.identity.firstname, {
+                                    attr: {
+                                        class: 'login-form__input',
+                                        placeholder: 'Votre prénom',
+                                    },
+                                }) }}
+
+                                {{ form_errors(form.identity.firstname) }}
+                            </div>
+
+                            <div class="login-form__field">
+                                {{ form_label(form.identity.lastname, null, {
+                                    label_attr: {class: 'login-form__label'},
+                                }) }}
+
+                                {{ form_widget(form.identity.lastname, {
+                                    attr: {
+                                        class: 'login-form__input',
+                                        placeholder: 'Votre nom',
+                                    },
+                                }) }}
+
+                                {{ form_errors(form.identity.lastname) }}
+                            </div>
+                        </div>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.identity.birthdate, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.identity.birthdate, {
+                                attr: {
+                                    class: 'login-form__input',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.identity.birthdate) }}
+                        </div>
+                    </div>
+
+                    <div class="registration-form__section">
+                        <h3 class="registration-form__section-title">
+                            Informations de connexion
+                        </h3>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.email, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.email, {
+                                attr: {
+                                    class: 'login-form__input',
+                                    placeholder: 'nom@exemple.fr',
+                                    autocomplete: 'email',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div
+                            class="login-form__field"
+                            data-controller="password-visibility"
+                        >
+                            {{ form_label(form.password.first, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            <div class="password-field">
+                                {{ form_widget(form.password.first, {
+                                    attr: {
+                                        class: 'login-form__input',
+                                        autocomplete: 'new-password',
+                                        placeholder: 'Votre mot de passe',
+                                        'data-password-visibility-target': 'input',
+                                    },
+                                }) }}
+
+                                <button
+                                    type="button"
+                                    class="password-field__toggle"
+                                    data-action="click->password-visibility#toggle"
+                                    title="Afficher le mot de passe"
+                                    aria-label="Afficher le mot de passe"
+                                >
+                                    <i
+                                        class="fa-solid fa-eye-slash"
+                                        data-password-visibility-target="icon"
+                                        aria-hidden="true"
+                                    ></i>
+                                </button>
+                            </div>
+
+                            {{ form_errors(form.password.first) }}
+                        </div>
+
+                        <div
+                            class="login-form__field"
+                            data-controller="password-visibility"
+                        >
+                            {{ form_label(form.password.second, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            <div class="password-field">
+                                {{ form_widget(form.password.second, {
+                                    attr: {
+                                        class: 'login-form__input',
+                                        autocomplete: 'new-password',
+                                        placeholder: 'Confirmez votre mot de passe',
+                                        'data-password-visibility-target': 'input',
+                                    },
+                                }) }}
+
+                                <button
+                                    type="button"
+                                    class="password-field__toggle"
+                                    data-action="click->password-visibility#toggle"
+                                    title="Afficher le mot de passe"
+                                    aria-label="Afficher le mot de passe"
+                                >
+                                    <i
+                                        class="fa-solid fa-eye-slash"
+                                        data-password-visibility-target="icon"
+                                        aria-hidden="true"
+                                    ></i>
+                                </button>
+                            </div>
+
+                            {{ form_errors(form.password.second) }}
+                        </div>
+
+                        {{ form_errors(form.password) }}
+                    </div>
+
+                    <button type="submit" class="login-form__submit">
+                        Créer mon compte
+                    </button>
+
+                {{ form_end(form) }}
+
+                <p class="login-card__footer">
+                    <span aria-hidden="true">✳</span>
+                    Vous avez déjà un compte ?
+                    <a href="{{ path('app_login') }}">Connectez-vous</a>.
+                </p>
+            </div>
+
+        </section>
+    </main>
+{% endblock %}

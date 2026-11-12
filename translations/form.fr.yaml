@@ -2,3 +2,9 @@ form:
   user:
     email: "Adresse e-mail"
     password: "Mot de passe"
+    password_confirmation: "Confirmation du mot de passe"
+    gender: "Civilité"
+    firstname: "Prénom"
+    lastname: "Nom"
+    birthdate: "Date de naissance"
+

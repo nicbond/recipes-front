@@ -24,6 +24,7 @@ class ApiService
         $headers = $options['headers'] ?? [];
 
         $headers['Accept'] = 'application/json';
+        $headers['Accept-Language'] = 'fr';
 
         if (null !== $token) {
             $headers['Authorization'] = 'Bearer '.$token;
