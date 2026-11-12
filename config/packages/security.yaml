@@ -13,7 +13,7 @@ security:
             security: false
             
         main:
-            lazy: true
+            lazy: true # Allows public routes in your API (e.g., recipes) to respond ultra-fast without accessing the session, while loading the user and their roles as soon as the frontend calls a protected route.
             provider: api_user_provider
             custom_authenticators:
                 - App\Security\ApiFormAuthenticator

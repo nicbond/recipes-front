@@ -2,22 +2,22 @@
 
 namespace App\Security\User;
 
+use App\Model\User\User;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ApiUser implements UserInterface, EquatableInterface
 {
-    /**
-     * @param non-empty-string $email
-     * @param list<string>     $roles
-     */
-    public function __construct(private string $email, private array $roles, private string $token, private readonly ?int $expiresAt = null)
-    {
+    public function __construct(
+        private User $user,
+        private string $token,
+        private readonly ?int $expiresAt = null,
+    ) {
     }
 
-    public function getEmail(): string
+    public function getUser(): User
     {
-        return $this->email;
+        return $this->user;
     }
 
     public function getToken(): string
@@ -36,20 +36,28 @@ class ApiUser implements UserInterface, EquatableInterface
 
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = $this->user->getRoles();
         $roles[] = 'ROLE_CONSUMER';
 
-        return array_unique($roles);
+        return array_values(array_unique($roles));
     }
 
     public function eraseCredentials(): void
     {
     }
 
-    /** @return non-empty-string */
+    /**
+     * @return non-empty-string
+     */
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        $email = $this->user->getEmail();
+
+        if ('' === $email) {
+            throw new \LogicException('The authenticated user must have an email address.');
+        }
+
+        return $email;
     }
 
     /**

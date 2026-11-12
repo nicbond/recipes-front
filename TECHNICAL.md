@@ -106,36 +106,48 @@ The backend expects the user's email and password and returns a JWT when authent
 The flow is:
 
 ```text
+
 User
- │
- ▼
+  │
+  ▼
 Login form (LoginType)
- │
- ▼
+  │
+  ▼
 ApiFormAuthenticator
- │
- ├── Validates the submitted form
- │
- ├── Calls ApiService::postLogin(email, password)
- │
- ▼
+  │
+  ├── Validates the submitted form
+  │
+  ├── Calls ApiService::postLogin(email, password)
+  │
+  ▼
 Backend POST /api/login_check
- │
- ├── Invalid credentials → authentication failure
- │
- └── Valid credentials → JWT response
-                          │
-                          ▼
-                  Validate response and exp
-                          │
-                          ▼
-                  Create ApiUser
-                          │
-                          ▼
-                  Symfony authenticated session
-                          │
-                          ▼
-                  Redirect to app_home
+  │
+  ├── Invalid credentials → authentication failure
+  │
+  └── Valid credentials → JWT response
+                           │
+                           ▼
+                   Validate response and exp
+                           │
+                           ▼
+                   GET /api/me
+                   Authorization: Bearer JWT
+                           │
+                           ▼
+                   Backend returns consumer profile
+                           │
+                           ▼
+                   Hydrate User and Identity
+                           │
+                           ▼
+                   Create ApiUser
+                           │
+                           ▼
+                   Symfony authenticated session
+                           │
+                           ▼
+                   Redirect to app_home
+
 ```
 
 ### Login form and authenticator
@@ -149,9 +161,12 @@ The authenticator:
 3. Distinguishes invalid credentials from an unavailable authentication service.
 4. Checks that the response contains a non-empty JWT.
 5. Reads the token's `exp` claim and rejects a missing or already expired expiration timestamp.
-6. Creates an `ApiUser` and returns a `SelfValidatingPassport`, because credential validation has already been performed by the backend.
-7. On success, stores the JWT in the server-side session and redirects to the home page.
-8. On failure, stores the authentication error and redirects back to the login page.
+6. Calls the backend `GET /api/me` endpoint through `ApiService`, sending the JWT in the `Authorization: Bearer` header.
+7. Validates the consumer profile response and hydrates the `User` and `Identity` models.
+8. Creates an `ApiUser` using the hydrated user profile, JWT and expiration timestamp, then returns a `SelfValidatingPassport`, 
+because credential validation has already been performed by the backend.
+9. On success, stores the authenticated user and JWT in the server-side session and redirects to the home page.
+10. On failure, stores the authentication error and redirects back to the login page.
 
 The frontend must not log or expose the user's password or JWT.
 
@@ -163,30 +178,91 @@ The HTTP status code returned by the backend is interpreted by the authenticator
 
 --------------------------------------------------------------------------------------------------------------
 
+
+## User Model
+
+The frontend defines its own user models under:
+
+```text
+src/Model/User/
+├── User.php
+└── Identity.php
+```
+
+These models represent the consumer profile returned by the backend API. They are frontend models and are independent from the backend Doctrine entities.
+
+## User
+
+The `User` model represents the authenticated consumer's profile.
+
+It contains:
+
+- The user's identifier.
+- The user's email address.
+- The user's roles.
+- The account creation date (`createdAt`).
+- The user's identity (`Identity`).
+
+The model is populated using the backend `GET /api/me` endpoint after successful authentication.
+
+It does not contain persistence logic or duplicate backend business rules.
+
+## Identity
+
+The `Identity` model contains the consumer's personal identity information:
+
+- Gender.
+- First name.
+- Last name.
+- Birth date.
+
+The gender is kept as a string in the frontend to avoid coupling the frontend model to the backend enum implementation.
+
+The birth date is hydrated as a `DateTimeImmutable` instance. Formatting and presentation remain the responsibility of Twig.
+
+**### Model hydration**
+
+After receiving a valid JWT from the backend, the frontend retrieves the authenticated consumer's profile through `GET /api/me`.
+
+The JWT is sent using the `Authorization: Bearer <token>` header.
+
+The frontend validates the API response and hydrates the `User` and `Identity` models.
+
+These models are then used by `ApiUser` to expose the authenticated consumer to Symfony Security.
+
+
 ## ApiUser and User Provider
 
 ### ApiUser
 
-`ApiUser` represents the authenticated user in the frontend security system. It holds the user's identifier, roles, JWT and its expiration timestamp.
+`ApiUser` represents the authenticated user in the frontend Symfony Security system.
 
-The frontend does not need to persist a separate local copy of the backend user's password. The JWT is kept server-side in the Symfony session.
+It wraps the frontend `App\Model\User\User` model, which contains the consumer profile returned by the backend `GET /api/me` endpoint.
 
-The `isTokenExpired()` method compares the stored expiration timestamp with the current Unix timestamp:
+Its responsibilities are to adapt this user profile to Symfony Security and manage the authentication-related information:
 
-```php
-public function isTokenExpired(): bool
-{
-    return null === $this->expiresAt || time() >= $this->expiresAt;
-}
-```
+- The authenticated user's identifier.
+- The user's effective roles.
+- The JWT.
+- The JWT expiration timestamp.
 
-A missing expiration timestamp is treated as expired, following a fail-closed approach.
+The user's profile information is provided by the `User` model. `ApiUser` adds the `ROLE_CONSUMER` role to the effective roles 
+exposed to Symfony Security.
+
+`ApiUser` implements Symfony's `EquatableInterface`. Its `isEqualTo()` method compares the user identifier and roles when 
+Symfony Security compares the authenticated user restored from the session.
+
+The frontend does not need to persist a separate local copy of the backend user's password. The JWT is kept server-side in the 
+Symfony session.
 
 ### ApiUserProvider
 
-`ApiUserProvider` supports the frontend's `ApiUser` class and checks the expiration state when a user is refreshed by Symfony Security. Authentication itself is initiated by `ApiFormAuthenticator`, not by loading a user from a local database.
+`ApiUserProvider` supports the frontend's `ApiUser` class.
 
-Token expiration is also checked centrally by `ExpiredJwtSubscriber`, so protected frontend requests do not rely solely on visiting the login page to detect an expired token.
+Authentication is initiated by `ApiFormAuthenticator`, which retrieves the consumer profile from the backend and creates the authenticated user. The provider does not load users from a local database.
+
+Token expiration is handled centrally by `ExpiredJwtSubscriber`, ensuring that protected frontend requests do not rely solely 
+on visiting the login page to detect an expired token.
 
 --------------------------------------------------------------------------------------------------------------
 

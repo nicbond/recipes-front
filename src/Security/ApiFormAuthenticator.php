@@ -3,6 +3,8 @@
 namespace App\Security;
 
 use App\Form\Security\LoginType;
+use App\Model\User\Identity;
+use App\Model\User\User;
 use App\Security\User\ApiUser;
 use App\Service\ApiService;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -62,8 +64,8 @@ class ApiFormAuthenticator extends AbstractAuthenticator
         }
 
         try {
-            $apiResponse = $this->apiService->postLogin($email, $password);
-            $statusCode = $apiResponse->getStatusCode();
+            $loginResponse = $this->apiService->postLogin($email, $password);
+            $statusCode = $loginResponse->getStatusCode();
 
             if (
                 Response::HTTP_UNAUTHORIZED === $statusCode
@@ -76,36 +78,177 @@ class ApiFormAuthenticator extends AbstractAuthenticator
                 throw new CustomUserMessageAuthenticationException('Le service d’authentification est momentanément indisponible.');
             }
 
-            $responseData = $apiResponse->toArray(false);
+            $loginData = json_decode(
+                $loginResponse->getContent(false),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+
+            if (!is_array($loginData)) {
+                throw new CustomUserMessageAuthenticationException('Réponse d’authentification invalide.');
+            }
+
+            $token = $loginData['token'] ?? null;
+
+            if (!is_string($token) || '' === $token) {
+                throw new CustomUserMessageAuthenticationException('Réponse d’authentification invalide.');
+            }
+
+            $expiresAt = $this->getTokenExpiration($token);
+
+            if (null === $expiresAt || $expiresAt <= time()) {
+                throw new CustomUserMessageAuthenticationException('Jeton d’authentification expiré ou invalide.');
+            }
+
+            $profileResponse = $this->apiService->request(
+                'GET',
+                '/me',
+                [],
+                $token
+            );
+
+            if (Response::HTTP_OK !== $profileResponse->getStatusCode()) {
+                throw new CustomUserMessageAuthenticationException('Impossible de récupérer votre profil utilisateur.');
+            }
+
+            $profileData = json_decode(
+                $profileResponse->getContent(false),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+
+            if (!$this->isStringKeyedArray($profileData)) {
+                throw new CustomUserMessageAuthenticationException('Réponse du profil utilisateur invalide.');
+            }
+
+            $user = $this->createUserFromApiResponse($profileData);
         } catch (CustomUserMessageAuthenticationException $exception) {
             throw $exception;
-        } catch (ExceptionInterface) {
+        } catch (ExceptionInterface|\JsonException) {
             throw new CustomUserMessageAuthenticationException('Le service d’authentification est momentanément indisponible.');
-        }
-
-        $token = $responseData['token'] ?? null;
-
-        if (!is_string($token) || '' === $token) {
-            throw new CustomUserMessageAuthenticationException('Réponse d’authentification invalide.');
-        }
-
-        $expiresAt = $this->getTokenExpiration($token);
-
-        if (null === $expiresAt || $expiresAt <= time()) {
-            throw new CustomUserMessageAuthenticationException('Jeton d’authentification expiré ou invalide.');
         }
 
         return new SelfValidatingPassport(
             new UserBadge(
-                $email,
+                $user->getEmail(),
                 static fn (): ApiUser => new ApiUser(
-                    $email,
-                    ['ROLE_CONSUMER'],
+                    $user,
                     $token,
                     $expiresAt
                 )
             )
         );
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function createUserFromApiResponse(array $data): User
+    {
+        $id = $data['id'] ?? null;
+        $email = $data['email'] ?? null;
+        $roles = $data['roles'] ?? null;
+        $identityData = $data['identity'] ?? null;
+
+        if (
+            !is_string($id)
+            || '' === $id
+            || !is_string($email)
+            || '' === $email
+            || !is_array($roles)
+            || !array_is_list($roles)
+            || !$this->isStringKeyedArray($identityData)
+        ) {
+            throw new CustomUserMessageAuthenticationException('Les données du profil utilisateur sont invalides.');
+        }
+
+        foreach ($roles as $role) {
+            if (!is_string($role)) {
+                throw new CustomUserMessageAuthenticationException('Les rôles du profil utilisateur sont invalides.');
+            }
+        }
+
+        $identity = new Identity(
+            $this->getNullableString($identityData, 'gender'),
+            $this->getNullableString($identityData, 'firstname'),
+            $this->getNullableString($identityData, 'lastname'),
+            $this->parseBirthdate($identityData['birthdate'] ?? null),
+        );
+
+        $createdAt = null;
+
+        if (isset($data['createdAt'])) {
+            if (!is_string($data['createdAt'])) {
+                throw new CustomUserMessageAuthenticationException('La date de création du profil est invalide.');
+            }
+
+            try {
+                $createdAt = new \DateTimeImmutable($data['createdAt']);
+            } catch (\Exception) {
+                throw new CustomUserMessageAuthenticationException('La date de création du profil est invalide.');
+            }
+        }
+
+        return new User(
+            $id,
+            $email,
+            $roles,
+            $createdAt,
+            $identity
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function getNullableString(array $data, string $key): ?string
+    {
+        $value = $data[$key] ?? null;
+
+        if (null !== $value && !is_string($value)) {
+            throw new CustomUserMessageAuthenticationException(sprintf('La propriété "%s" du profil est invalide.', $key));
+        }
+
+        return $value;
+    }
+
+    private function parseBirthdate(mixed $birthdate): ?\DateTimeImmutable
+    {
+        if (null === $birthdate) {
+            return null;
+        }
+
+        if (!is_string($birthdate)) {
+            throw new CustomUserMessageAuthenticationException('La date de naissance du profil est invalide.');
+        }
+
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $birthdate);
+
+        if (false === $date || $date->format('Y-m-d') !== $birthdate) {
+            throw new CustomUserMessageAuthenticationException('La date de naissance du profil est invalide.');
+        }
+
+        return $date;
+    }
+
+    /**
+     * @phpstan-assert-if-true array<string, mixed> $data
+     */
+    private function isStringKeyedArray(mixed $data): bool
+    {
+        if (!is_array($data)) {
+            return false;
+        }
+
+        foreach (array_keys($data) as $key) {
+            if (!is_string($key)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function getTokenExpiration(string $token): ?int
@@ -130,6 +273,7 @@ class ApiFormAuthenticator extends AbstractAuthenticator
     {
         /** @var ApiUser $user */
         $user = $token->getUser();
+
         $request->getSession()->set('jwt_token', $user->getToken());
 
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
