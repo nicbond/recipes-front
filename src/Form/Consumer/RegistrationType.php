@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -31,9 +32,7 @@ class RegistrationType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank(message: 'form.email.required'),
-                    new \Symfony\Component\Validator\Constraints\Email(
-                        message: 'form.email.invalid',
-                    ),
+                    new Email(message: 'form.email.invalid'),
                 ],
             ])
             ->add('password', RepeatedType::class, [
@@ -68,6 +67,12 @@ class RegistrationType extends AbstractType
                 ],
             ])
             ->add('identity', IdentityType::class, [
+                'label' => false,
+                'constraints' => [
+                    new Valid(),
+                ],
+            ])
+            ->add('address', AddressType::class, [
                 'label' => false,
                 'constraints' => [
                     new Valid(),

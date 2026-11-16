@@ -7,4 +7,10 @@ form:
     firstname: "Prénom"
     lastname: "Nom"
     birthdate: "Date de naissance"
-
+    street: "Adresse"
+    complement: "Complément d'adresse"
+    postal_code: "Code postal"
+    city: "Ville"
+    country: "Pays"
+    phone_number: "Téléphone"
+    extra_information: "Informations complémentaires"

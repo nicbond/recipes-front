@@ -3,6 +3,7 @@
 namespace App\Controller\Consumer;
 
 use App\Form\Consumer\RegistrationType;
+use App\Model\User\Address;
 use App\Model\User\Identity;
 use App\Model\User\RegistrationConsumer;
 use App\Service\ApiService;
@@ -23,7 +24,12 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $registration = new RegistrationConsumer('', '', new Identity());
+        $registration = new RegistrationConsumer(
+            '',
+            '',
+            new Identity(),
+            new Address(),
+        );
 
         $form = $this->createForm(RegistrationType::class, $registration, [
             'attr' => [
@@ -142,7 +148,21 @@ class RegistrationController extends AbstractController
 
                     continue;
                 }
-            } elseif ($form->has($propertyPath)) {
+            }
+
+            if (str_starts_with($propertyPath, 'address.')) {
+                $field = substr($propertyPath, strlen('address.'));
+
+                if ($form->get('address')->has($field)) {
+                    $form->get('address')->get($field)->addError(
+                        new FormError($message),
+                    );
+
+                    continue;
+                }
+            }
+
+            if ($form->has($propertyPath)) {
                 $form->get($propertyPath)->addError(
                     new FormError($message),
                 );
@@ -163,12 +183,22 @@ class RegistrationController extends AbstractController
      *         firstname: ?string,
      *         lastname: ?string,
      *         birthdate: ?string
+     *     },
+     *     address: array{
+     *         street: ?string,
+     *         complement: ?string,
+     *         postalCode: ?string,
+     *         city: ?string,
+     *         countryCode: ?string,
+     *         phoneNumber: ?string,
+     *         extraInformation: ?string
      *     }
      * }
      */
     private function prepareRegistrationPayload(RegistrationConsumer $registration): array
     {
         $identity = $registration->getIdentity();
+        $address = $registration->getAddress();
 
         return [
             'email' => $registration->getEmail(),
@@ -178,6 +208,15 @@ class RegistrationController extends AbstractController
                 'firstname' => $identity->getFirstname(),
                 'lastname' => $identity->getLastname(),
                 'birthdate' => $identity->getBirthdate()?->format('Y-m-d'),
+            ],
+            'address' => [
+                'street' => $address->getStreet(),
+                'complement' => $address->getComplement(),
+                'postalCode' => $address->getPostalCode(),
+                'city' => $address->getCity(),
+                'countryCode' => $address->getCountryCode(),
+                'phoneNumber' => $address->getPhoneNumber(),
+                'extraInformation' => $address->getExtraInformation(),
             ],
         ];
     }

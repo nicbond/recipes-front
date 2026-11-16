@@ -22,3 +22,22 @@ form:
   birthdate:
     required: "Veuillez saisir votre date de naissance."
     invalid: "Votre date de naissance doit être postérieure au 01/01/1900."
+  street:
+    required: "Veuillez saisir votre adresse."
+    max_length: "Votre adresse ne doit pas dépasser {{ limit }} caractères."
+  complement:
+    max_length: "Le complément d'adresse ne doit pas dépasser {{ limit }} caractères."
+  postal_code:
+    required: "Veuillez saisir votre code postal."
+    invalid: "Le code postal doit contenir exactement 5 chiffres."
+  city:
+    required: "Veuillez saisir votre ville."
+    max_length: "Votre ville ne doit pas dépasser {{ limit }} caractères."
+  country:
+    required: "Veuillez sélectionner votre pays."
+    invalid: "Le pays sélectionné n'est pas valide."
+  phone_number:
+    max_length: "Le numéro de téléphone ne doit pas dépasser {{ limit }} caractères."
+    invalid: "Veuillez saisir un numéro de téléphone français valide."
+  extra_information:
+    max_length: "Les informations complémentaires ne doivent pas dépasser {{ limit }} caractères."

@@ -4,8 +4,12 @@ namespace App\Model\User;
 
 class RegistrationConsumer
 {
-    public function __construct(private string $email, private string $password, private Identity $identity)
-    {
+    public function __construct(
+        private string $email,
+        private string $password,
+        private Identity $identity,
+        private Address $address,
+    ) {
     }
 
     public function getEmail(): string
@@ -13,9 +17,9 @@ class RegistrationConsumer
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
-        $this->email = $email;
+        $this->email = $email ?? '';
 
         return $this;
     }
@@ -25,9 +29,9 @@ class RegistrationConsumer
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
-        $this->password = $password;
+        $this->password = $password ?? '';
 
         return $this;
     }
@@ -40,6 +44,18 @@ class RegistrationConsumer
     public function setIdentity(Identity $identity): self
     {
         $this->identity = $identity;
+
+        return $this;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(Address $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }

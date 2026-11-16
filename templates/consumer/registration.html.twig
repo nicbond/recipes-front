@@ -109,6 +109,121 @@
 
                     <div class="registration-form__section">
                         <h3 class="registration-form__section-title">
+                            Adresse
+                        </h3>
+
+                        {{ form_errors(form.address) }}
+
+                        <div class="login-form__field">
+                            {{ form_label(form.address.street, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.address.street, {
+                                attr: {
+                                    class: 'login-form__input',
+                                    placeholder: 'Numéro et nom de rue',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.address.street) }}
+                        </div>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.address.complement, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.address.complement, {
+                                attr: {
+                                    class: 'login-form__input',
+                                    placeholder: 'Appartement, bâtiment, étage...',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.address.complement) }}
+                        </div>
+
+                        <div class="registration-form__identity-grid">
+                            <div class="login-form__field">
+                                {{ form_label(form.address.postalCode, null, {
+                                    label_attr: {class: 'login-form__label'},
+                                }) }}
+
+                                {{ form_widget(form.address.postalCode, {
+                                    attr: {
+                                        class: 'login-form__input',
+                                        placeholder: '75001',
+                                    },
+                                }) }}
+
+                                {{ form_errors(form.address.postalCode) }}
+                            </div>
+
+                            <div class="login-form__field">
+                                {{ form_label(form.address.city, null, {
+                                    label_attr: {class: 'login-form__label'},
+                                }) }}
+
+                                {{ form_widget(form.address.city, {
+                                    attr: {
+                                        class: 'login-form__input',
+                                        placeholder: 'Votre ville',
+                                    },
+                                }) }}
+
+                                {{ form_errors(form.address.city) }}
+                            </div>
+                        </div>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.address.countryCode, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.address.countryCode, {
+                                attr: {
+                                    class: 'login-form__input',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.address.countryCode) }}
+                        </div>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.address.phoneNumber, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.address.phoneNumber, {
+                                attr: {
+                                    class: 'login-form__input',
+                                    placeholder: '06 12 34 56 78',
+                                },
+                            }) }}
+
+                            {{ form_errors(form.address.phoneNumber) }}
+                        </div>
+
+                        <div class="login-form__field">
+                            {{ form_label(form.address.extraInformation, null, {
+                                label_attr: {class: 'login-form__label'},
+                            }) }}
+
+                            {{ form_widget(form.address.extraInformation, {
+                                attr: {
+                                    class: 'login-form__input',
+                                    placeholder: 'Informations complémentaires sur votre adresse...',
+                                    rows: 3,
+                                },
+                            }) }}
+
+                            {{ form_errors(form.address.extraInformation) }}
+                        </div>
+                    </div>
+
+                    <div class="registration-form__section">
+                        <h3 class="registration-form__section-title">
                             Informations de connexion
                         </h3>
 
