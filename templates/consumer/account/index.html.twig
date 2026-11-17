@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte | Le Carnet Gourmand{% endblock %}
+
+{% block body %}
+    <main class="account-page">
+        <div class="account-container">
+
+            <header class="account-header">
+                <div class="account-header__content">
+                    <span class="account-eyebrow">
+                        <span class="account-eyebrow__dot"></span>
+                        ESPACE PERSONNEL
+                    </span>
+
+                    <h1>Bienvenue dans votre espace.</h1>
+
+                    <p>
+                        Retrouvez et gérez vos informations personnelles
+                        en toute simplicité.
+                    </p>
+                </div>
+
+                <div class="account-header__decoration" aria-hidden="true">
+                    <span>Le plaisir</span>
+                    <span>de partager.</span>
+                </div>
+            </header>
+
+            <div class="account-grid">
+
+                {# Informations personnelles #}
+                <section class="account-card" aria-labelledby="account-identity-title">
+                    <div class="account-card__header">
+                        <div class="account-card__heading">
+                            <span class="account-card__icon" aria-hidden="true">✿</span>
+
+                            <div>
+                                <span class="account-card__eyebrow">VOTRE IDENTITÉ</span>
+                                <h2 id="account-identity-title">Informations personnelles</h2>
+                            </div>
+                        </div>
+
+                        <span class="account-card__status">Bientôt disponible</span>
+                    </div>
+
+                    <div class="account-info-grid">
+                        <div class="account-info">
+                            <span class="account-info__label">Civilité</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+
+                        <div class="account-info">
+                            <span class="account-info__label">Date de naissance</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+
+                        <div class="account-info">
+                            <span class="account-info__label">Prénom</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+
+                        <div class="account-info">
+                            <span class="account-info__label">Nom</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+                    </div>
+                </section>
+
+                {# Adresse personnelle #}
+                <section class="account-card" aria-labelledby="account-address-title">
+                    <div class="account-card__header">
+                        <div class="account-card__heading">
+                            <span class="account-card__icon account-card__icon--peach" aria-hidden="true">⌂</span>
+
+                            <div>
+                                <span class="account-card__eyebrow">VOTRE ADRESSE</span>
+                                <h2 id="account-address-title">Adresse personnelle</h2>
+                            </div>
+                        </div>
+
+                        <span class="account-card__status">Bientôt disponible</span>
+                    </div>
+
+                    <div class="account-address">
+                        <div class="account-info">
+                            <span class="account-info__label">Adresse</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+
+                        <div class="account-info">
+                            <span class="account-info__label">Complément d'adresse</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+
+                        <div class="account-info-grid account-info-grid--address">
+                            <div class="account-info">
+                                <span class="account-info__label">Code postal</span>
+                                <span class="account-info__value">À renseigner</span>
+                            </div>
+
+                            <div class="account-info">
+                                <span class="account-info__label">Ville</span>
+                                <span class="account-info__value">À renseigner</span>
+                            </div>
+                        </div>
+
+                        <div class="account-info-grid account-info-grid--address">
+                            <div class="account-info">
+                                <span class="account-info__label">Pays</span>
+                                <span class="account-info__value">À renseigner</span>
+                            </div>
+
+                            <div class="account-info">
+                                <span class="account-info__label">Téléphone</span>
+                                <span class="account-info__value">À renseigner</span>
+                            </div>
+                        </div>
+
+                        <div class="account-info">
+                            <span class="account-info__label">Informations complémentaires</span>
+                            <span class="account-info__value">À renseigner</span>
+                        </div>
+                    </div>
+                </section>
+
+                {# Informations de connexion #}
+                <section class="account-card account-card--connection" aria-labelledby="account-connection-title">
+                    <div class="account-card__header">
+                        <div class="account-card__heading">
+                            <span class="account-card__icon account-card__icon--yellow" aria-hidden="true">♧</span>
+
+                            <div>
+                                <span class="account-card__eyebrow">VOTRE SÉCURITÉ</span>
+                                <h2 id="account-connection-title">Informations de connexion</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="account-connection-grid">
+                        <div class="account-info">
+                            <span class="account-info__label">Adresse e-mail</span>
+                            <span class="account-info__value">Votre adresse e-mail</span>
+                            <span class="account-info__hint">Utilisée pour vous connecter à votre compte.</span>
+                        </div>
+
+                        <div class="account-info">
+                            <span class="account-info__label">Mot de passe</span>
+                            <span class="account-info__value account-info__password">••••••••••••</span>
+                            <span class="account-info__hint">Protégez votre compte avec un mot de passe sécurisé.</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <footer class="account-footer">
+                <span class="account-footer__icon" aria-hidden="true">♡</span>
+                <p>Un espace pensé pour vous, avec le goût des bonnes choses.</p>
+            </footer>
+
+        </div>
+    </main>
+{% endblock %}

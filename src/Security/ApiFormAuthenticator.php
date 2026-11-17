@@ -3,7 +3,6 @@
 namespace App\Security;
 
 use App\Form\Security\LoginType;
-use App\Model\User\Identity;
 use App\Model\User\User;
 use App\Security\User\ApiUser;
 use App\Service\ApiService;
@@ -22,7 +21,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
-class ApiFormAuthenticator extends AbstractAuthenticator
+final class ApiFormAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
@@ -33,7 +32,8 @@ class ApiFormAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): bool
     {
-        return 'app_login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        return 'app_login' === $request->attributes->get('_route')
+            && $request->isMethod('POST');
     }
 
     public function authenticate(Request $request): Passport
@@ -150,7 +150,6 @@ class ApiFormAuthenticator extends AbstractAuthenticator
         $id = $data['id'] ?? null;
         $email = $data['email'] ?? null;
         $roles = $data['roles'] ?? null;
-        $identityData = $data['identity'] ?? null;
 
         if (
             !is_string($id)
@@ -159,7 +158,6 @@ class ApiFormAuthenticator extends AbstractAuthenticator
             || '' === $email
             || !is_array($roles)
             || !array_is_list($roles)
-            || !$this->isStringKeyedArray($identityData)
         ) {
             throw new CustomUserMessageAuthenticationException('Les données du profil utilisateur sont invalides.');
         }
@@ -169,13 +167,6 @@ class ApiFormAuthenticator extends AbstractAuthenticator
                 throw new CustomUserMessageAuthenticationException('Les rôles du profil utilisateur sont invalides.');
             }
         }
-
-        $identity = new Identity(
-            $this->getNullableString($identityData, 'gender'),
-            $this->getNullableString($identityData, 'firstname'),
-            $this->getNullableString($identityData, 'lastname'),
-            $this->parseBirthdate($identityData['birthdate'] ?? null),
-        );
 
         $createdAt = null;
 
@@ -196,41 +187,7 @@ class ApiFormAuthenticator extends AbstractAuthenticator
             $email,
             $roles,
             $createdAt,
-            $identity
         );
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function getNullableString(array $data, string $key): ?string
-    {
-        $value = $data[$key] ?? null;
-
-        if (null !== $value && !is_string($value)) {
-            throw new CustomUserMessageAuthenticationException(sprintf('La propriété "%s" du profil est invalide.', $key));
-        }
-
-        return $value;
-    }
-
-    private function parseBirthdate(mixed $birthdate): ?\DateTimeImmutable
-    {
-        if (null === $birthdate) {
-            return null;
-        }
-
-        if (!is_string($birthdate)) {
-            throw new CustomUserMessageAuthenticationException('La date de naissance du profil est invalide.');
-        }
-
-        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $birthdate);
-
-        if (false === $date || $date->format('Y-m-d') !== $birthdate) {
-            throw new CustomUserMessageAuthenticationException('La date de naissance du profil est invalide.');
-        }
-
-        return $date;
     }
 
     /**
@@ -269,7 +226,7 @@ class ApiFormAuthenticator extends AbstractAuthenticator
             : null;
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
     {
         /** @var ApiUser $user */
         $user = $token->getUser();
@@ -279,7 +236,7 @@ class ApiFormAuthenticator extends AbstractAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
         $request->getSession()->set(
             SecurityRequestAttributes::AUTHENTICATION_ERROR,

@@ -1537,3 +1537,393 @@ nav.site-navbar button:focus-visible {
     color: var(--color-terracotta);
     text-decoration: underline;
 }
+
+/* =========================================================
+   ESPACE CLIENT — ACCOUNT
+   ========================================================= */
+
+.account-page {
+    min-height: calc(100vh - 88px);
+    padding: 64px 24px 72px;
+    color: var(--color-text);
+    background: var(--color-cream);
+}
+
+.account-container {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+/* ---------------------------------------------------------
+   EN-TÊTE
+   --------------------------------------------------------- */
+
+.account-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 210px;
+    margin-bottom: 36px;
+    padding: 38px 48px;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    color: var(--color-white);
+    background: var(--color-green);
+}
+
+.account-header::before,
+.account-header::after {
+    position: absolute;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+.account-header::before {
+    top: -160px;
+    right: 100px;
+    width: 350px;
+    height: 350px;
+}
+
+.account-header::after {
+    right: -80px;
+    bottom: -190px;
+    width: 330px;
+    height: 330px;
+}
+
+.account-header__content {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+}
+
+.account-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #d9e5d5;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.account-eyebrow__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-terracotta);
+}
+
+.account-header h1 {
+    margin: 0 0 14px;
+    color: var(--color-white);
+    font-family: var(--font-editorial);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+}
+
+.account-header p {
+    max-width: 530px;
+    margin: 0;
+    color: rgb(255 255 255 / 78%);
+    font-size: 0.96rem;
+    line-height: 1.8;
+}
+
+.account-header__decoration {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    color: #e7d8a8;
+    font-family: var(--font-editorial);
+    font-size: 1.8rem;
+    font-style: italic;
+    line-height: 1.3;
+    text-align: right;
+    transform: rotate(-7deg);
+}
+
+/* ---------------------------------------------------------
+   GRILLE DES CARTES
+   --------------------------------------------------------- */
+
+.account-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.account-card {
+    min-width: 0;
+    padding: 30px;
+    border: 1px solid rgb(49 91 67 / 8%);
+    border-radius: var(--radius-lg);
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+}
+
+.account-card--connection {
+    grid-column: 1 / -1;
+}
+
+/* ---------------------------------------------------------
+   EN-TÊTES DES CARTES
+   --------------------------------------------------------- */
+
+.account-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 28px;
+}
+
+.account-card__heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.account-card__icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    color: var(--color-green);
+    background: var(--color-green-light);
+    font-size: 1.6rem;
+}
+
+.account-card__icon--peach {
+    color: var(--color-terracotta);
+    background: var(--color-peach);
+}
+
+.account-card__icon--yellow {
+    color: #856b2d;
+    background: var(--color-yellow);
+}
+
+.account-card__eyebrow {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-muted);
+    font-size: 0.61rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.account-card__heading h2 {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-editorial);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.account-card__status {
+    flex-shrink: 0;
+    padding: 6px 9px;
+    border-radius: 20px;
+    color: var(--color-green);
+    background: var(--color-green-light);
+    font-size: 0.65rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------------------------------------------------------
+   INFORMATIONS
+   --------------------------------------------------------- */
+
+.account-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.account-info__label {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.account-info__value {
+    overflow-wrap: anywhere;
+    color: var(--color-text);
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+.account-info__hint {
+    color: var(--color-muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   ADRESSE
+   --------------------------------------------------------- */
+
+.account-address {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.account-info-grid--address {
+    gap: 18px;
+}
+
+/* ---------------------------------------------------------
+   CONNEXION
+   --------------------------------------------------------- */
+
+.account-connection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+}
+
+.account-connection-grid .account-info {
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-cream);
+}
+
+.account-info__password {
+    letter-spacing: 0.16em;
+}
+
+/* ---------------------------------------------------------
+   PIED DE PAGE
+   --------------------------------------------------------- */
+
+.account-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 38px;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+.account-footer__icon {
+    color: var(--color-terracotta);
+    font-size: 1.2rem;
+}
+
+.account-footer p {
+    margin: 0;
+    font-family: var(--font-editorial);
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 767.98px) {
+    .account-page {
+        min-height: auto;
+        padding: 32px 16px 48px;
+    }
+
+    .account-header {
+        min-height: 0;
+        margin-bottom: 22px;
+        padding: 32px 26px;
+    }
+
+    .account-header__decoration {
+        display: none;
+    }
+
+    .account-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .account-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .account-card--connection {
+        grid-column: auto;
+    }
+
+    .account-card {
+        padding: 24px 22px;
+    }
+
+    .account-card__header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+
+    .account-card__heading h2 {
+        font-size: 1.2rem;
+    }
+
+    .account-connection-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .account-footer {
+        align-items: flex-start;
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .account-info-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .account-card__status {
+        margin-left: 60px;
+    }
+}
+
+/* ---------------------------------------------------------
+   ACCESSIBILITÉ — MOUVEMENTS RÉDUITS
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .account-page *,
+    .account-page *::before,
+    .account-page *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

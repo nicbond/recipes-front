@@ -17,28 +17,29 @@
                 Recettes
             </a>
 
-        {% if app.user %}
-            {# <a href="{{ path('app_account') }}" class="site-navbar-login">
-                <span>Mon compte</span>
-            </a> #}
+            {% if app.user %}
+                <a href="{{ path('app_account') }}"
+                   class="site-navbar-login {{ app.current_route == 'app_account' ? 'site-navbar-link-active' : '' }}">
+                    <span>Mon compte</span>
+                </a>
 
-        <form action="{{ path('app_logout') }}" method="post">
-            <input
-                type="hidden"
-                name="_csrf_token"
-                value="{{ csrf_token('logout') }}"
-            >
-            <button type="submit" class="site-navbar-login">
-                <span>Déconnexion</span>
-                <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
-            </button>
-        </form>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="site-navbar-login">
-                <span>Connexion</span>
-                <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
-            </a>
-        {% endif %}
+                <form action="{{ path('app_logout') }}" method="post">
+                    <input
+                        type="hidden"
+                        name="_csrf_token"
+                        value="{{ csrf_token('logout') }}"
+                    >
+                    <button type="submit" class="site-navbar-login">
+                        <span>Déconnexion</span>
+                        <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
+                    </button>
+                </form>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="site-navbar-login">
+                    <span>Connexion</span>
+                    <span class="site-navbar-login-arrow" aria-hidden="true">↗</span>
+                </a>
+            {% endif %}
         </div>
     </div>
 </nav>

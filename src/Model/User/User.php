@@ -12,7 +12,7 @@ class User
         private string $email,
         private array $roles,
         private ?\DateTimeImmutable $createdAt,
-        private Identity $identity,
+        private ?Identity $identity = null,
     ) {
     }
 
@@ -70,12 +70,12 @@ class User
         return $this;
     }
 
-    public function getIdentity(): Identity
+    public function getIdentity(): ?Identity
     {
         return $this->identity;
     }
 
-    public function setIdentity(Identity $identity): self
+    public function setIdentity(?Identity $identity): self
     {
         $this->identity = $identity;
 
