@@ -41,30 +41,98 @@
                             </div>
                         </div>
 
-                        <span class="account-card__status">Bientôt disponible</span>
+                        {% if not editIdentity %}
+                            <a href="{{ path('app_account', {edit: 'identity'}) }}"
+                               class="account-card__status">
+                                Modifier
+                            </a>
+                        {% endif %}
                     </div>
 
-                    <div class="account-info-grid">
-                        <div class="account-info">
-                            <span class="account-info__label">Civilité</span>
-                            <span class="account-info__value">À renseigner</span>
-                        </div>
+                    {% if editIdentity %}
+                        <div class="account-identity-form">
+                            <p class="account-info__hint">
+                                Modifiez vos informations personnelles ci-dessous.
+                            </p>
 
-                        <div class="account-info">
-                            <span class="account-info__label">Date de naissance</span>
-                            <span class="account-info__value">À renseigner</span>
-                        </div>
+                            {{ form_start(identityForm, {
+                                action: path('app_account', {edit: 'identity'}),
+                                attr: {class: 'account-form'},
+                            }) }}
 
-                        <div class="account-info">
-                            <span class="account-info__label">Prénom</span>
-                            <span class="account-info__value">À renseigner</span>
-                        </div>
+                                {{ form_errors(identityForm) }}
 
-                        <div class="account-info">
-                            <span class="account-info__label">Nom</span>
-                            <span class="account-info__value">À renseigner</span>
+                                {# Field spacing, layout and margins #}
+                                {# Input appearance, borders, background and focus styles #}
+                                {{ form_row(identityForm.gender, {
+                                    row_attr: {class: 'account-form__field'},
+                                    attr: {class: 'account-form__control'},
+                                }) }}
+
+                                {{ form_row(identityForm.firstname, {
+                                    row_attr: {class: 'account-form__field'},
+                                    attr: {class: 'account-form__control'},
+                                }) }}
+
+                                {{ form_row(identityForm.lastname, {
+                                    row_attr: {class: 'account-form__field'},
+                                    attr: {class: 'account-form__control'},
+                                }) }}
+
+                                {{ form_row(identityForm.birthdate, {
+                                    row_attr: {class: 'account-form__field'},
+                                    attr: {class: 'account-form__control'},
+                                }) }}
+
+                                <div class="account-form__actions">
+                                    <button type="submit" class="account-form__submit">
+                                        Enregistrer
+                                    </button>
+
+                                    <a href="{{ path('app_account') }}" class="account-form__cancel">
+                                        Annuler
+                                    </a>
+                                </div>
+
+                            {{ form_end(identityForm) }}
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="account-info-grid">
+                            <div class="account-info">
+                                <span class="account-info__label">Civilité</span>
+                                <span class="account-info__value">
+                                    {% if identity.gender == 'M' %}
+                                        Monsieur
+                                    {% elseif identity.gender == 'F' %}
+                                        Madame
+                                    {% else %}
+                                        À renseigner
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <div class="account-info">
+                                <span class="account-info__label">Date de naissance</span>
+                                <span class="account-info__value">
+                                    {{ identity.birthdate ? identity.birthdate|date('d/m/Y') : 'À renseigner' }}
+                                </span>
+                            </div>
+
+                            <div class="account-info">
+                                <span class="account-info__label">Prénom</span>
+                                <span class="account-info__value">
+                                    {{ identity.firstname ?: 'À renseigner' }}
+                                </span>
+                            </div>
+
+                            <div class="account-info">
+                                <span class="account-info__label">Nom</span>
+                                <span class="account-info__value">
+                                    {{ identity.lastname ?: 'À renseigner' }}
+                                </span>
+                            </div>
+                        </div>
+                    {% endif %}
                 </section>
 
                 {# Adresse personnelle #}
