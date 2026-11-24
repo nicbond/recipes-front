@@ -17,7 +17,7 @@ parameters:
             max_subject_width: 120
             max_body_width: 500
             matchers:
-                Must contain JIRA issue number and short description separate by a colon and space: '/^(FID-\d+|PTSI-\d+|ISSUE-\d+|IT|HOTFIX|RELEASE-[0-9\.]+[0-9])+: .*/'
+                Must contain JIRA issue number and short description separate by a colon and space: '/^(FID-\d+|PTSI-\d+|ISSUE-\d+|IT|DOC|HOTFIX|RELEASE-[0-9\.]+[0-9])+: .*/'
             case_insensitive: false
             multiline: false
             metadata:
@@ -27,6 +27,7 @@ parameters:
                 - '/(feature|hotfix)\/(FID|PTSI)-\d+.*/'
                 - '/issue\/\d+.*/'
                 - '/it\/.*/i'
+                - '/doc\/.*/i'
                 - '/hotfix\/.*/'
                 - '/release\/([0-9\.]+[0-9]$)/'
         phpcsfixer2:

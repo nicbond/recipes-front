@@ -2,24 +2,27 @@
 
 Symfony 7.4 application providing the frontend interface for the Recipes project.
 
-This project is separated from the backend and communicates with it through HTTP API requests. It focuses on rendering the user interface, handling user authentication, managing the frontend session, and providing Consumer account verification.
+This project is separated from the backend and communicates with it through HTTP API requests. It focuses on rendering the user interface, handling user authentication, managing the frontend session, and providing Consumer account management and verification.
 
 ## Features
 
+* Consumer registration with email verification
 * Login form using email and password
 * Authentication through the backend API (`/api/login_check`)
 * JWT-based authentication
 * Server-side session management
+* Consumer account profile consultation and identity updates
 * Redirection to the home page when an authenticated user visits the login page
-* JWT expiration handling with automatic redirection to the login page
-* Flash notification explaining when the session has expired
+* Centralized session expiration handling when the JWT expires or the backend rejects an authenticated request with HTTP 401
+* Automatic redirection to the login page with a flash notification and restoration of the previous GET page after successful authentication
 * Role-based access control for protected frontend pages
 * CSRF protection for logout
-* Consumer email verification through a dedicated frontend page.
-* Explicit user action required to activate a Consumer account.
-* Forwarding of signed verification requests to the backend API.
-* Centralized communication with the backend API through Symfony HttpClient.
-* Handling of invalid credentials, expired verification links, and unavailable backend services.
+* Consumer email verification through a dedicated frontend page
+* Explicit user action required to activate a Consumer account
+* Forwarding of signed verification requests to the backend API
+* Centralized communication with the backend API through Symfony HttpClient
+* Handling of invalid credentials, expired verification links, and unavailable backend services
+* Preservation of the authenticated session when the backend returns HTTP 403 or HTTP 422
 
 ## Tech Stack
 
