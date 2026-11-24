@@ -2,7 +2,10 @@
 
 namespace App\Service;
 
+use App\Exception\ApiUnauthorizedException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -17,9 +20,16 @@ class ApiService
 
     /**
      * @param array<string, mixed> $options
+     *
+     * @throws ApiUnauthorizedException
+     * @throws TransportExceptionInterface
      */
-    public function request(string $method, string $path, array $options = [], ?string $token = null): ResponseInterface
-    {
+    public function request(
+        string $method,
+        string $path,
+        array $options = [],
+        ?string $token = null,
+    ): ResponseInterface {
         /** @var array<string, string> $headers */
         $headers = $options['headers'] ?? [];
 
@@ -32,11 +42,18 @@ class ApiService
 
         $options['headers'] = $headers;
 
-        return $this->client->request(
+        $response = $this->client->request(
             $method,
             rtrim($this->apiBackUrl, '/').'/'.ltrim($path, '/'),
             $options,
         );
+
+        // Only authenticated calls: a 401 on the login call means "wrong credentials", not "expired session".
+        if (null !== $token && Response::HTTP_UNAUTHORIZED === $response->getStatusCode()) {
+            throw new ApiUnauthorizedException();
+        }
+
+        return $response;
     }
 
     public function postLogin(string $email, string $password): ResponseInterface

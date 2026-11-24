@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Exception\ApiUnauthorizedException;
 use App\Form\Security\LoginType;
 use App\Model\User\User;
 use App\Security\User\ApiUser;
@@ -19,10 +20,18 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
 final class ApiFormAuthenticator extends AbstractAuthenticator
 {
+    use TargetPathTrait;
+
+    private const MESSAGE_INVALID_FORM = 'Veuillez vérifier les données du formulaire.';
+    private const MESSAGE_BAD_CREDENTIALS = 'Adresse e-mail ou mot de passe incorrect.';
+    private const MESSAGE_UNAVAILABLE = 'Le service d’authentification est momentanément indisponible.';
+    private const MESSAGE_PROFILE_UNAVAILABLE = 'Impossible de récupérer votre profil utilisateur.';
+
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
         private FormFactoryInterface $formFactory,
@@ -38,108 +47,136 @@ final class ApiFormAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $form = $this->formFactory->create(LoginType::class);
-        $form->handleRequest($request);
-
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            throw new CustomUserMessageAuthenticationException('Veuillez vérifier les données du formulaire.');
-        }
-
-        $data = $form->getData();
-
-        if (!is_array($data)) {
-            throw new CustomUserMessageAuthenticationException('Données du formulaire invalides.');
-        }
-
-        $email = $data['email'] ?? null;
-        $password = $data['password'] ?? null;
-
-        if (
-            !is_string($email)
-            || '' === $email
-            || !is_string($password)
-            || '' === $password
-        ) {
-            throw new CustomUserMessageAuthenticationException('Veuillez vérifier les données du formulaire.');
-        }
+        [$email, $password] = $this->extractCredentials($request);
 
         try {
-            $loginResponse = $this->apiService->postLogin($email, $password);
-            $statusCode = $loginResponse->getStatusCode();
-
-            if (
-                Response::HTTP_UNAUTHORIZED === $statusCode
-                || Response::HTTP_UNPROCESSABLE_ENTITY === $statusCode
-            ) {
-                throw new CustomUserMessageAuthenticationException('Adresse e-mail ou mot de passe incorrect.');
-            }
-
-            if (Response::HTTP_OK !== $statusCode) {
-                throw new CustomUserMessageAuthenticationException('Le service d’authentification est momentanément indisponible.');
-            }
-
-            $loginData = json_decode(
-                $loginResponse->getContent(false),
-                true,
-                512,
-                JSON_THROW_ON_ERROR
-            );
-
-            if (!is_array($loginData)) {
-                throw new CustomUserMessageAuthenticationException('Réponse d’authentification invalide.');
-            }
-
-            $token = $loginData['token'] ?? null;
-
-            if (!is_string($token) || '' === $token) {
-                throw new CustomUserMessageAuthenticationException('Réponse d’authentification invalide.');
-            }
-
-            $expiresAt = $this->getTokenExpiration($token);
-
-            if (null === $expiresAt || $expiresAt <= time()) {
-                throw new CustomUserMessageAuthenticationException('Jeton d’authentification expiré ou invalide.');
-            }
-
-            $profileResponse = $this->apiService->request(
-                'GET',
-                '/me',
-                [],
-                $token
-            );
-
-            if (Response::HTTP_OK !== $profileResponse->getStatusCode()) {
-                throw new CustomUserMessageAuthenticationException('Impossible de récupérer votre profil utilisateur.');
-            }
-
-            $profileData = json_decode(
-                $profileResponse->getContent(false),
-                true,
-                512,
-                JSON_THROW_ON_ERROR
-            );
-
-            if (!$this->isStringKeyedArray($profileData)) {
-                throw new CustomUserMessageAuthenticationException('Réponse du profil utilisateur invalide.');
-            }
-
-            $user = $this->createUserFromApiResponse($profileData);
-        } catch (CustomUserMessageAuthenticationException $exception) {
-            throw $exception;
-        } catch (ExceptionInterface|\JsonException) {
-            throw new CustomUserMessageAuthenticationException('Le service d’authentification est momentanément indisponible.');
+            [$token, $expiresAt] = $this->login($email, $password);
+            $user = $this->fetchUser($token);
+        } catch (ApiUnauthorizedException $exception) {
+            // The API rejected the token it has just issued: the login cannot succeed.
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_PROFILE_UNAVAILABLE, previous: $exception);
+        } catch (ExceptionInterface|\JsonException $exception) {
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_UNAVAILABLE, previous: $exception);
         }
 
         return new SelfValidatingPassport(
             new UserBadge(
                 $user->getEmail(),
-                static fn (): ApiUser => new ApiUser(
-                    $user,
-                    $token,
-                    $expiresAt
-                )
-            )
+                static fn (): ApiUser => new ApiUser($user, $token, $expiresAt),
+            ),
         );
+    }
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
+    {
+        $user = $token->getUser();
+
+        if (!$user instanceof ApiUser) {
+            throw new \LogicException(sprintf('Expected %s, got %s.', ApiUser::class, get_debug_type($user)));
+        }
+
+        $session = $request->getSession();
+
+        // Back to the page the user was on when the session was closed, if any.
+        $targetPath = $this->getTargetPath($session, $firewallName);
+
+        if (null !== $targetPath) {
+            $this->removeTargetPath($session, $firewallName);
+
+            return new RedirectResponse($targetPath);
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
+    {
+        $request->getSession()->set(
+            SecurityRequestAttributes::AUTHENTICATION_ERROR,
+            $exception,
+        );
+
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+    }
+
+    /**
+     * @return array{string, string} email and password
+     */
+    private function extractCredentials(Request $request): array
+    {
+        $form = $this->formFactory->create(LoginType::class);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_INVALID_FORM);
+        }
+
+        $data = $form->getData();
+        $email = is_array($data) ? ($data['email'] ?? null) : null;
+        $password = is_array($data) ? ($data['password'] ?? null) : null;
+
+        if (!is_string($email) || '' === $email || !is_string($password) || '' === $password) {
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_INVALID_FORM);
+        }
+
+        return [$email, $password];
+    }
+
+    /**
+     * @return array{string, int} JWT and its expiration timestamp
+     *
+     * @throws ExceptionInterface
+     * @throws \JsonException
+     */
+    private function login(string $email, string $password): array
+    {
+        $response = $this->apiService->postLogin($email, $password);
+        $statusCode = $response->getStatusCode();
+
+        if (Response::HTTP_UNAUTHORIZED === $statusCode || Response::HTTP_UNPROCESSABLE_ENTITY === $statusCode) {
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_BAD_CREDENTIALS);
+        }
+
+        if (Response::HTTP_OK !== $statusCode) {
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_UNAVAILABLE);
+        }
+
+        $data = json_decode($response->getContent(false), true, 512, JSON_THROW_ON_ERROR);
+        $token = is_array($data) ? ($data['token'] ?? null) : null;
+
+        if (!is_string($token) || '' === $token) {
+            throw new CustomUserMessageAuthenticationException('Réponse d’authentification invalide.');
+        }
+
+        $expiresAt = $this->getTokenExpiration($token);
+
+        if (null === $expiresAt || $expiresAt <= time()) {
+            throw new CustomUserMessageAuthenticationException('Jeton d’authentification expiré ou invalide.');
+        }
+
+        return [$token, $expiresAt];
+    }
+
+    /**
+     * @throws ApiUnauthorizedException
+     * @throws ExceptionInterface
+     * @throws \JsonException
+     */
+    private function fetchUser(string $token): User
+    {
+        $response = $this->apiService->request('GET', '/me', [], $token);
+
+        if (Response::HTTP_OK !== $response->getStatusCode()) {
+            throw new CustomUserMessageAuthenticationException(self::MESSAGE_PROFILE_UNAVAILABLE);
+        }
+
+        $data = json_decode($response->getContent(false), true, 512, JSON_THROW_ON_ERROR);
+
+        if (!$this->isStringKeyedArray($data)) {
+            throw new CustomUserMessageAuthenticationException('Réponse du profil utilisateur invalide.');
+        }
+
+        return $this->createUserFromApiResponse($data);
     }
 
     /**
@@ -170,8 +207,8 @@ final class ApiFormAuthenticator extends AbstractAuthenticator
 
         $createdAt = null;
 
-        if (isset($data['createdAt'])) {
-            if (!is_string($data['createdAt'])) {
+        if (null !== ($data['createdAt'] ?? null)) {
+            if (!is_string($data['createdAt']) || '' === trim($data['createdAt'])) {
                 throw new CustomUserMessageAuthenticationException('La date de création du profil est invalide.');
             }
 
@@ -182,12 +219,7 @@ final class ApiFormAuthenticator extends AbstractAuthenticator
             }
         }
 
-        return new User(
-            $id,
-            $email,
-            $roles,
-            $createdAt,
-        );
+        return new User($id, $email, $roles, $createdAt);
     }
 
     /**
@@ -212,37 +244,28 @@ final class ApiFormAuthenticator extends AbstractAuthenticator
     {
         $parts = explode('.', $token);
 
-        if (!isset($parts[1])) {
+        if (
+            3 !== count($parts)
+            || '' === $parts[0]
+            || '' === $parts[1]
+            || '' === $parts[2]
+        ) {
             return null;
         }
 
-        $payload = json_decode(
-            base64_decode(strtr($parts[1], '-_', '+/')),
-            true
+        $payload = base64_decode(
+            strtr($parts[1], '-_', '+/'),
+            true,
         );
 
-        return is_array($payload) && is_int($payload['exp'] ?? null)
-            ? $payload['exp']
+        if (false === $payload) {
+            return null;
+        }
+
+        $data = json_decode($payload, true);
+
+        return is_array($data) && is_int($data['exp'] ?? null)
+            ? $data['exp']
             : null;
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
-    {
-        /** @var ApiUser $user */
-        $user = $token->getUser();
-
-        $request->getSession()->set('jwt_token', $user->getToken());
-
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
-    }
-
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
-    {
-        $request->getSession()->set(
-            SecurityRequestAttributes::AUTHENTICATION_ERROR,
-            $exception
-        );
-
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }
 }

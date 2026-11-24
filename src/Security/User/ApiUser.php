@@ -6,13 +6,10 @@ use App\Model\User\User;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ApiUser implements UserInterface, EquatableInterface
+final readonly class ApiUser implements UserInterface, EquatableInterface
 {
-    public function __construct(
-        private User $user,
-        private string $token,
-        private readonly ?int $expiresAt = null,
-    ) {
+    public function __construct(private User $user, private string $token, private int $expiresAt)
+    {
     }
 
     public function getUser(): User
@@ -27,19 +24,15 @@ class ApiUser implements UserInterface, EquatableInterface
 
     public function isTokenExpired(): bool
     {
-        if (null === $this->expiresAt) {
-            return false;
-        }
-
         return time() >= $this->expiresAt;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getRoles(): array
     {
-        $roles = $this->user->getRoles();
-        $roles[] = 'ROLE_CONSUMER';
-
-        return array_values(array_unique($roles));
+        return array_values(array_unique($this->user->getRoles()));
     }
 
     public function eraseCredentials(): void
@@ -65,7 +58,7 @@ class ApiUser implements UserInterface, EquatableInterface
      */
     public function isEqualTo(UserInterface $user): bool
     {
-        if (!$user instanceof ApiUser) {
+        if (!$user instanceof self) {
             return false;
         }
 

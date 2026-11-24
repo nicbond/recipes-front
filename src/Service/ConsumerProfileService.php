@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use App\Exception\ApiUnauthorizedException;
 use App\Model\User\Identity;
 use App\Security\User\ApiUser;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -16,6 +18,7 @@ final readonly class ConsumerProfileService
     /**
      * Retrieves the identity of the logged-in consumer.
      *
+     * @throws ApiUnauthorizedException
      * @throws ExceptionInterface
      * @throws \UnexpectedValueException
      */
@@ -35,6 +38,7 @@ final readonly class ConsumerProfileService
      *
      * @return list<array{propertyPath: string, message: string}>
      *
+     * @throws ApiUnauthorizedException
      * @throws ExceptionInterface
      * @throws \UnexpectedValueException
      */
@@ -59,7 +63,7 @@ final readonly class ConsumerProfileService
             $apiUser->getToken(),
         );
 
-        if (422 === $response->getStatusCode()) {
+        if (Response::HTTP_UNPROCESSABLE_ENTITY === $response->getStatusCode()) {
             /** @var array<string, mixed> $payload */
             $payload = $response->toArray(false);
 
